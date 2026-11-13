@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -13,20 +12,66 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;min-height:100vh;padding:20px;
- font-family:Arial,sans-serif;color:white;
+ margin:0;
+ min-height:100vh;
+ padding:20px;
+ font-family:Arial,sans-serif;
+ color:white;
  background:radial-gradient(circle at top,#163c70,#080d1c 70%);
- display:flex;justify-content:center;align-items:flex-start;
+ display:flex;
+ justify-content:center;
+ align-items:flex-start;
 }
+
 .container{width:100%;max-width:440px;margin:auto}
-.logo{text-align:center;font-size:25px;font-weight:900;letter-spacing:2px;color:#65c6ff;margin-bottom:25px}
-.card{background:rgba(19,35,64,.96);border:1px solid #34577c;border-radius:22px;padding:20px;box-shadow:0 15px 45px #0008}
+
+.logo{
+ text-align:center;
+ font-size:25px;
+ font-weight:900;
+ letter-spacing:2px;
+ color:#65c6ff;
+ margin-bottom:25px
+}
+
+.card{
+ background:rgba(19,35,64,.96);
+ border:1px solid #34577c;
+ border-radius:22px;
+ padding:20px;
+ box-shadow:0 15px 45px #0008
+}
+
 h2{text-align:center;margin-top:0}
 .subtitle{text-align:center;color:#9db6d3;font-size:13px}
-input{width:100%;padding:14px;margin:9px 0;background:#09162b;border:1px solid #345477;border-radius:11px;color:white;font-size:14px;outline:none}
+
+input{
+ width:100%;
+ padding:14px;
+ margin:9px 0;
+ background:#09162b;
+ border:1px solid #345477;
+ border-radius:11px;
+ color:white;
+ font-size:14px;
+ outline:none
+}
+
 input:focus{border-color:#45aaff}
-button{border:0;border-radius:10px;padding:12px;background:#1689ff;color:white;font-weight:bold;cursor:pointer;margin:5px 0}
+
+button{
+ border:0;
+ border-radius:10px;
+ padding:12px;
+ background:#1689ff;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+ margin:5px 0
+}
+
 button:active{transform:scale(.97)}
 .main-btn{width:100%;padding:14px;margin-top:12px}
 .secondary{background:#263e60}
@@ -34,71 +79,437 @@ button:active{transform:scale(.97)}
 .green{background:#159b77}
 .hidden{display:none!important}
 .error{text-align:center;color:#ff7d8e;font-size:13px;min-height:16px}
+
 .auth-switch{display:flex;gap:8px;margin:15px 0}
-.auth-switch button{flex:1;margin:0;background:#10243e;color:#9db6d3}
+.auth-switch button{
+ flex:1;
+ margin:0;
+ background:#10243e;
+ color:#9db6d3
+}
 .auth-switch button.active{background:#1689ff;color:white}
-.link{color:#69c3ff;text-align:center;cursor:pointer;font-size:12px;margin:15px 0 5px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:8px}
+
+.link{
+ color:#69c3ff;
+ text-align:center;
+ cursor:pointer;
+ font-size:12px;
+ margin:15px 0 5px
+}
+
+/* NEW LOGIN DESIGN */
+#authCard{
+ background:linear-gradient(155deg,rgba(17,42,76,.98),rgba(7,17,35,.98));
+ border:1px solid rgba(93,174,255,.35);
+ border-radius:25px;
+ padding:23px 20px;
+ box-shadow:0 20px 65px #0009,0 0 30px #1689ff16;
+ animation:authAppear .65s ease;
+ overflow:hidden;
+ position:relative
+}
+
+#authCard:before{
+ content:"";
+ position:absolute;
+ top:0;
+ left:12%;
+ width:76%;
+ height:2px;
+ background:linear-gradient(90deg,transparent,#54c8ff,transparent)
+}
+
+@keyframes authAppear{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+#authCard .auth-switch{
+ background:#07162c;
+ padding:5px;
+ border:1px solid #29486b;
+ border-radius:13px;
+ gap:5px;
+ margin:0 0 25px
+}
+
+#authCard .auth-switch button{
+ padding:12px 5px;
+ border-radius:9px;
+ font-size:12px;
+ transition:.25s
+}
+
+#authCard .auth-switch button.active{
+ background:linear-gradient(135deg,#1689ff,#2360d8);
+ color:white;
+ box-shadow:0 4px 15px #1689ff55
+}
+
+#authCard h2{
+ font-size:24px;
+ letter-spacing:1px;
+ margin:5px 0 8px;
+ color:#f2f8ff
+}
+
+#authCard .subtitle{
+ font-size:11px;
+ letter-spacing:2px;
+ color:#79b9ed;
+ margin-bottom:24px
+}
+
+#authCard .input-wrap{
+ position:relative;
+ margin:13px 0
+}
+
+#authCard .input-wrap .input-icon{
+ position:absolute;
+ left:14px;
+ top:50%;
+ transform:translateY(-50%);
+ font-size:17px;
+ pointer-events:none
+}
+
+#authCard .input-wrap input{
+ width:100%;
+ height:51px;
+ padding:14px 45px 14px 43px;
+ margin:0;
+ background:rgba(4,15,32,.85);
+ border:1px solid #29496d;
+ border-radius:12px;
+ color:white;
+ font-size:13px;
+ transition:.25s
+}
+
+#authCard .input-wrap input:focus{
+ border-color:#42aaff;
+ box-shadow:0 0 0 3px #1689ff1c;
+ background:#0a1c35
+}
+
+#authCard .input-wrap input::placeholder{
+ color:#7892b1
+}
+
+#authCard .pass-toggle{
+ position:absolute;
+ right:10px;
+ top:50%;
+ transform:translateY(-50%);
+ margin:0;
+ padding:7px;
+ background:transparent;
+ color:#8cbce7;
+ font-size:16px;
+ border-radius:7px
+}
+
+#authCard .pass-toggle:active{transform:translateY(-50%) scale(.9)}
+
+#authCard .main-btn{
+ height:50px;
+ border-radius:12px;
+ font-size:14px;
+ letter-spacing:1px;
+ background:linear-gradient(110deg,#087eff,#315ce8);
+ box-shadow:0 7px 20px #087eff35;
+ transition:.25s
+}
+
+#authCard .main-btn.green{
+ background:linear-gradient(110deg,#079d82,#13b77c);
+ box-shadow:0 7px 20px #079d8235
+}
+
+#authCard .main-btn:hover{filter:brightness(1.12)}
+
+#authCard .link{
+ font-size:12px;
+ color:#69c3ff;
+ margin-top:18px
+}
+
+#authCard .note{
+ text-align:center;
+ background:#0b1d35;
+ border:1px solid #24476c;
+ border-radius:11px;
+ padding:11px;
+ margin-top:22px;
+ color:#83a9d0;
+ font-size:11px
+}
+
+#authCard .error{
+ margin-top:10px;
+ line-height:1.5
+}
+
+/* OTHER VAULT DESIGN */
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:18px;
+ gap:8px
+}
+
 .top button{margin:0}
-.folder-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
-.folder-btn{background:#0b1b32;border:1px solid #345477;border-radius:14px;padding:15px 8px;color:#a9c4e2;font-size:12px;line-height:1.7;margin:0}
+
+.folder-nav{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin:15px 0
+}
+
+.folder-btn{
+ background:#0b1b32;
+ border:1px solid #345477;
+ border-radius:14px;
+ padding:15px 8px;
+ color:#a9c4e2;
+ font-size:12px;
+ line-height:1.7;
+ margin:0
+}
+
 .folder-btn .folder-icon{display:block;font-size:25px}
-.folder-btn.active{background:linear-gradient(145deg,#126ac2,#123a68);border:1px solid #62baff;color:white;box-shadow:0 5px 20px #087cff35}
-.folder-panel{background:#0b192e;border:1px solid #294667;border-radius:15px;padding:15px;min-height:250px}
+
+.folder-btn.active{
+ background:linear-gradient(145deg,#126ac2,#123a68);
+ border:1px solid #62baff;
+ color:white;
+ box-shadow:0 5px 20px #087cff35
+}
+
+.folder-panel{
+ background:#0b192e;
+ border:1px solid #294667;
+ border-radius:15px;
+ padding:15px;
+ min-height:250px
+}
+
 .folder-heading{color:#70c5ff;font-size:15px;margin:12px 0 8px}
 .folder-desc{color:#91aaca;font-size:11px;margin:0 0 14px}
 .app-title{color:#b8d5f3;font-size:12px;font-weight:bold;margin:18px 0 10px}
-.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.app-option{display:flex;align-items:center;gap:8px;background:#10243e;border:1px solid #294667;border-radius:10px;padding:10px 8px;cursor:pointer;min-width:0}
-.app-option:has(input:checked){background:#123b62;border-color:#42aaff}
-.app-option input{width:17px;height:17px;margin:0;accent-color:#1689ff;flex-shrink:0}
+
+.app-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px
+}
+
+.app-option{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ background:#10243e;
+ border:1px solid #294667;
+ border-radius:10px;
+ padding:10px 8px;
+ cursor:pointer;
+ min-width:0
+}
+
+.app-option:has(input:checked){
+ background:#123b62;
+ border-color:#42aaff
+}
+
+.app-option input{
+ width:17px;
+ height:17px;
+ margin:0;
+ accent-color:#1689ff;
+ flex-shrink:0
+}
+
 .app-icon{font-size:21px}
 .app-name{font-size:11px;font-weight:bold;overflow-wrap:anywhere}
-.selected-apps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.app-tag{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:8px;background:#153657;border:1px solid #31628e;font-size:11px;color:#d9efff}
-#accounts,#mobileList,#gmailAccounts,#facebookAccounts{max-height:390px;overflow-y:auto;padding:3px;scrollbar-width:thin;scrollbar-color:#1689ff #09172c}
-.account{background:#10233d;border:1px solid #294667;border-radius:11px;padding:10px;margin-top:9px;overflow-wrap:anywhere}
+
+.selected-apps{
+ display:flex;
+ flex-wrap:wrap;
+ gap:6px;
+ margin-top:10px
+}
+
+.app-tag{
+ display:inline-flex;
+ align-items:center;
+ gap:4px;
+ padding:5px 8px;
+ border-radius:8px;
+ background:#153657;
+ border:1px solid #31628e;
+ font-size:11px;
+ color:#d9efff
+}
+
+#accounts,#mobileList{
+ max-height:390px;
+ overflow-y:auto;
+ padding:3px;
+ scrollbar-width:thin;
+ scrollbar-color:#1689ff #09172c
+}
+
+.account{
+ background:#10233d;
+ border:1px solid #294667;
+ border-radius:11px;
+ padding:10px;
+ margin-top:9px;
+ overflow-wrap:anywhere
+}
+
 .account h3{color:#69c3ff;font-size:13px;margin:0 0 7px}
 .account .info{font-size:11px;color:#c3d5e9;margin:5px 0;line-height:1.5}
-.account .actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
-.account .actions button{flex:1;min-width:65px;padding:8px 4px;font-size:10px;border-radius:7px;margin:0}
-#count{font-size:11px;margin-top:12px;text-align:center;color:#9db6d3}
+
+.account .actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:5px;
+ margin-top:9px
+}
+
+.account .actions button{
+ flex:1;
+ min-width:65px;
+ padding:8px 4px;
+ font-size:10px;
+ border-radius:7px;
+ margin:0
+}
+
+#count{
+ font-size:11px;
+ margin-top:12px;
+ text-align:center;
+ color:#9db6d3
+}
+
 .empty{text-align:center;padding:45px 10px;color:#7895b6;font-size:13px}
 .empty-icon{font-size:35px;display:block;margin-bottom:12px}
 .footer{text-align:center;color:#718ba9;font-size:11px;margin:20px}
-.note{background:#10243e;border:1px solid #294667;border-radius:10px;padding:10px;color:#9db6d3;font-size:11px;line-height:1.5;margin-top:12px}
-.battery-card{background:linear-gradient(145deg,#102e50,#0b1b32);border:1px solid #3472a6;border-radius:16px;padding:16px;margin:15px 0}
-.battery-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+
+.note{
+ background:#10243e;
+ border:1px solid #294667;
+ border-radius:10px;
+ padding:10px;
+ color:#9db6d3;
+ font-size:11px;
+ line-height:1.5;
+ margin-top:12px
+}
+
+.battery-card{
+ background:linear-gradient(145deg,#102e50,#0b1b32);
+ border:1px solid #3472a6;
+ border-radius:16px;
+ padding:16px;
+ margin:15px 0
+}
+
+.battery-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:12px
+}
+
 .battery-label{font-size:12px;color:#a9c9e8}
 .battery-percent{font-size:36px;font-weight:900;color:#65c6ff;text-align:center;margin:10px 0}
-.battery-bar{width:100%;height:13px;background:#071326;border-radius:20px;overflow:hidden;border:1px solid #345477}
-.battery-fill{height:100%;width:0%;background:linear-gradient(90deg,#159b77,#65e6b5);border-radius:20px;transition:width .4s}
-.battery-details{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
-.battery-detail{background:#091a30;border:1px solid #294667;border-radius:10px;padding:10px;text-align:center}
-.battery-detail span{display:block;color:#8caaca;font-size:10px;margin-bottom:6px}
+
+.battery-bar{
+ width:100%;
+ height:13px;
+ background:#071326;
+ border-radius:20px;
+ overflow:hidden;
+ border:1px solid #345477
+}
+
+.battery-fill{
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#159b77,#65e6b5);
+ border-radius:20px;
+ transition:width .4s
+}
+
+.battery-details{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+ margin-top:15px
+}
+
+.battery-detail{
+ background:#091a30;
+ border:1px solid #294667;
+ border-radius:10px;
+ padding:10px;
+ text-align:center
+}
+
+.battery-detail span{
+ display:block;
+ color:#8caaca;
+ font-size:10px;
+ margin-bottom:6px
+}
+
 .battery-detail b{font-size:12px;color:#e1f1ff}
 .battery-status{text-align:center;font-size:12px;color:#a9c9e8;margin-top:13px}
 .battery-refresh{width:100%;margin-top:12px}
+
+@media(max-width:380px){
+ body{padding:12px}
+ #authCard{padding:18px 15px}
+ #authCard h2{font-size:21px}
+}
 </style>
 </head>
 
 <body>
 <div class="container">
+
 <div class="logo">🔐 ONLINE VAULT</div>
 
 <div class="card" id="authCard">
+
  <div class="auth-switch">
-  <button id="loginTab" class="active" onclick="showAuth('login')">LOGIN</button>
-  <button id="signupTab" onclick="showAuth('signup')">SIGN UP</button>
+  <button id="loginTab" class="active" onclick="showAuth('login')">লগিন করুন</button>
+  <button id="signupTab" onclick="showAuth('signup')">অ্যাকাউন্ট তৈরি করুন</button>
  </div>
 
  <div id="loginForm">
   <h2>WELCOME BACK 👋</h2>
   <p class="subtitle">LOGIN TO YOUR VAULT</p>
-  <input id="loginEmail" type="email" placeholder="Enter Email Address">
-  <input id="loginPass" type="password" placeholder="Enter Password">
-  <button class="secondary" style="width:100%" onclick="toggleAuthPass('loginPass')">👁 SHOW / HIDE PASSWORD</button>
+
+  <div class="input-wrap">
+   <span class="input-icon">📧</span>
+   <input id="loginEmail" type="email" placeholder="Enter Email Address">
+  </div>
+
+  <div class="input-wrap">
+   <span class="input-icon">🔒</span>
+   <input id="loginPass" type="password" placeholder="Enter Password">
+   <button type="button" class="pass-toggle" onclick="toggleAuthPass('loginPass')">👁</button>
+  </div>
+
   <button class="main-btn" onclick="login()">LOGIN 🔓</button>
+
   <p class="link" onclick="forgotPassword()">Forgot Password?</p>
   <p class="error" id="loginError"></p>
  </div>
@@ -106,18 +517,37 @@ button:active{transform:scale(.97)}
  <div id="signupForm" class="hidden">
   <h2>CREATE ACCOUNT ✨</h2>
   <p class="subtitle">JOIN ONLINE VAULT</p>
-  <input id="signupName" type="text" placeholder="Your Full Name">
-  <input id="signupEmail" type="email" placeholder="Email Address">
-  <input id="signupPass" type="password" placeholder="Create Password (8+ characters)">
-  <input id="signupConfirm" type="password" placeholder="Confirm Password">
-  <button class="secondary" style="width:100%" onclick="toggleSignupPasswords()">👁 SHOW / HIDE PASSWORD</button>
-  <button class="main-btn green" onclick="signup()">CREATE ACCOUNT</button>
+
+  <div class="input-wrap">
+   <span class="input-icon">👤</span>
+   <input id="signupName" type="text" placeholder="Your Full Name">
+  </div>
+
+  <div class="input-wrap">
+   <span class="input-icon">📧</span>
+   <input id="signupEmail" type="email" placeholder="Email Address">
+  </div>
+
+  <div class="input-wrap">
+   <span class="input-icon">🔒</span>
+   <input id="signupPass" type="password" placeholder="Create Password (8+ characters)">
+   <button type="button" class="pass-toggle" onclick="toggleSignupPasswords()">👁</button>
+  </div>
+
+  <div class="input-wrap">
+   <span class="input-icon">🔐</span>
+   <input id="signupConfirm" type="password" placeholder="Confirm Password">
+  </div>
+
+  <button class="main-btn green" onclick="signup()">CREATE ACCOUNT ✨</button>
   <p class="error" id="signupError"></p>
  </div>
+
  <p class="note">☁️ Firebase Online Account System</p>
 </div>
 
 <div class="card hidden" id="vault">
+
  <div class="top">
   <div>
    <b>🔐 MY PASSWORD VAULT</b>
@@ -130,10 +560,6 @@ button:active{transform:scale(.97)}
   <button class="folder-btn" id="mobileTab" onclick="openFolder('mobile')"><span class="folder-icon">📱</span>MOBILE INFO</button>
   <button class="folder-btn" id="addTab" onclick="openFolder('add')"><span class="folder-icon">📂</span>ADD ACCOUNT</button>
   <button class="folder-btn" id="saveTab" onclick="openFolder('save')"><span class="folder-icon">📁</span>SAVE ACCOUNT</button>
-  <button class="folder-btn" id="gmailTab" onclick="openFolder('gmail')"><span class="folder-icon">📧</span>GMAIL ACCOUNT</button>
-  <button class="folder-btn" id="facebookTab" onclick="openFolder('facebook')"><span class="folder-icon">📘</span>FACEBOOK ACCOUNT</button>
-  <button class="folder-btn" id="savedGmailTab" onclick="openFolder('savedGmail')"><span class="folder-icon">📂</span>SAVED GMAIL</button>
-  <button class="folder-btn" id="savedFacebookTab" onclick="openFolder('savedFacebook')"><span class="folder-icon">📁</span>SAVED FACEBOOK</button>
  </div>
 
  <div class="folder-panel hidden" id="mobileFolder">
@@ -185,7 +611,7 @@ button:active{transform:scale(.97)}
   </div>
 
   <p class="app-title">📝 ACCOUNT NAME</p>
-  <input id="accountName" type="text" placeholder="যেমন: JONY FF MAIN ID">
+  <input id="accountName" type="text" placeholder="আপনার আইডির নাম লেখুন যেমন : জনি">
 
   <p class="app-title">📧 GMAIL ADDRESS</p>
   <input id="gmail" type="email" placeholder="Enter Gmail Address">
@@ -207,49 +633,6 @@ button:active{transform:scale(.97)}
   <p id="count"></p>
  </div>
 
- <!-- GMAIL ACCOUNT -->
- <div class="folder-panel hidden" id="gmailFolder">
-  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
-  <h3 class="folder-heading">📧 GMAIL ACCOUNT</h3>
-  <p class="folder-desc">Add a Gmail account.</p>
-  <input id="gmailAccountName" placeholder="আপনার আইডির নাম লিখুন">
-  <input id="gmailAddress" type="email" placeholder="Enter Gmail Address">
-  <input id="gmailPassword" type="password" placeholder="Enter Gmail Password">
-  <button class="secondary" style="width:100%" onclick="toggleNewPass('gmailPassword')">👁 SHOW / HIDE PASSWORD</button>
-  <button class="main-btn green" onclick="saveNewAccount('gmail')">💾 SAVE GMAIL</button>
-  <p class="note">🔐 পাসওয়ার্ড এনক্রিপ্ট করে সংরক্ষণ করা হবে। Master Password মনে রাখবেন।</p>
- </div>
-
- <!-- FACEBOOK ACCOUNT -->
- <div class="folder-panel hidden" id="facebookFolder">
-  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
-  <h3 class="folder-heading">📘 FACEBOOK ACCOUNT</h3>
-  <p class="folder-desc">Add a Facebook account.</p>
-  <input id="facebookAccountName" placeholder="আপনার আইডির নাম লিখুন">
-  <input id="facebookAddress" placeholder="Gmail / Phone Number">
-  <input id="facebookPassword" type="password" placeholder="Enter Facebook Password">
-  <button class="secondary" style="width:100%" onclick="toggleNewPass('facebookPassword')">👁 SHOW / HIDE PASSWORD</button>
-  <button class="main-btn green" onclick="saveNewAccount('facebook')">💾 SAVE FACEBOOK</button>
-  <p class="note">🔐 পাসওয়ার্ড এনক্রিপ্ট করে সংরক্ষণ করা হবে। Master Password মনে রাখবেন।</p>
- </div>
-
- <!-- SAVED GMAIL -->
- <div class="folder-panel hidden" id="savedGmailFolder">
-  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
-  <h3 class="folder-heading">📂 SAVED GMAIL</h3>
-  <p class="folder-desc">Your saved Gmail accounts.</p>
-  <input id="searchGmail" type="search" placeholder="🔍 Search Gmail..." oninput="renderNewAccounts('gmail')">
-  <div id="gmailAccounts"></div>
- </div>
-
- <!-- SAVED FACEBOOK -->
- <div class="folder-panel hidden" id="savedFacebookFolder">
-  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
-  <h3 class="folder-heading">📁 SAVED FACEBOOK</h3>
-  <p class="folder-desc">Your saved Facebook accounts.</p>
-  <input id="searchFacebook" type="search" placeholder="🔍 Search Facebook..." oninput="renderNewAccounts('facebook')">
-  <div id="facebookAccounts"></div>
- </div>
 </div>
 
 <div class="footer">MODE BY JONY © 2026</div>
@@ -275,7 +658,6 @@ let data=[];
 let mobiles=[];
 let editing=null;
 let batteryManager=null;
-let vaultMasterPassword=null;
 
 const appInfo={
  "Free Fire":{icon:"🔥",name:"Free Fire"},
@@ -435,7 +817,6 @@ auth.onAuthStateChanged(async user=>{
   data=[];
   mobiles=[];
   editing=null;
-  vaultMasterPassword=null;
 
   document.getElementById("vault").classList.add("hidden");
   document.getElementById("authCard").classList.remove("hidden");
@@ -458,8 +839,6 @@ async function loadUserData(){
 
   render();
   renderMobiles();
-  renderNewAccounts("gmail");
-  renderNewAccounts("facebook");
  }catch(e){
   alert("ডাটা লোড হয়নি: "+friendlyError(e));
  }
@@ -469,40 +848,26 @@ async function loadUserData(){
 function openFolder(folder){
  if(!currentUser)return;
 
- const folders=[
-  "mobile","add","save","gmail","facebook","savedGmail","savedFacebook"
- ];
-
- const tabs=[
-  "mobileTab","addTab","saveTab","gmailTab","facebookTab",
-  "savedGmailTab","savedFacebookTab"
- ];
+ const home=document.getElementById("folderHome");
 
  if(folder==="home"){
-  document.getElementById("folderHome").classList.remove("hidden");
+  home.classList.remove("hidden");
 
-  folders.forEach(name=>{
+  ["mobile","add","save"].forEach(name=>{
    document.getElementById(name+"Folder").classList.add("hidden");
+   document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.remove("active");
   });
-
-  tabs.forEach(id=>{
-   document.getElementById(id).classList.remove("active");
-  });
-
   return;
  }
 
- document.getElementById("folderHome").classList.add("hidden");
+ home.classList.add("hidden");
 
- folders.forEach((name,index)=>{
+ ["mobile","add","save"].forEach(name=>{
   document.getElementById(name+"Folder").classList.toggle("hidden",name!==folder);
-  document.getElementById(tabs[index]).classList.toggle("active",name===folder);
+  document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.toggle("active",name===folder);
  });
 
  if(folder==="save")render();
- if(folder==="savedGmail")renderNewAccounts("gmail");
- if(folder==="savedFacebook")renderNewAccounts("facebook");
-
  if(folder==="mobile"){
   renderMobiles();
   loadBattery();
@@ -653,7 +1018,7 @@ function setSelectedApps(apps=[]){
  });
 }
 
-// SAVE ACCOUNT
+// SAVE ACCOUNT WITH ACCOUNT NAME
 async function saveAccount(){
  if(!currentUser)return;
 
@@ -732,7 +1097,7 @@ function cancelEdit(){
 function editAccount(id){
  if(!currentUser)return;
 
- const item=data.find(a=>a.id===id && !a.vaultType);
+ const item=data.find(a=>a.id===id);
  if(!item)return;
 
  editing=id;
@@ -773,7 +1138,7 @@ async function copyText(value){
  }
 }
 
-// RENDER OLD SAVED ACCOUNTS
+// RENDER SAVED ACCOUNTS + SEARCH BY NAME/GMAIL
 function render(){
  const box=document.getElementById("accounts");
  if(!box)return;
@@ -784,8 +1149,6 @@ function render(){
  let total=0;
 
  data.forEach(a=>{
-  if(a.vaultType)return;
-
   const accountName=(a.accountName||"").toLowerCase();
   const gmail=(a.gmail||"").toLowerCase();
 
@@ -854,308 +1217,10 @@ function render(){
   box.appendChild(empty);
  }
 
- const oldTotal=data.filter(a=>!a.vaultType).length;
  document.getElementById("count").textContent=
- "Total Accounts: "+oldTotal+" | Showing: "+total;
-}
-
-// ----------------------------------
-// NEW GMAIL AND FACEBOOK ACCOUNTS
-// ----------------------------------
-
-function toggleNewPass(id){
- const p=document.getElementById(id);
- p.type=p.type==="password"?"text":"password";
-}
-
-// ENCRYPTION HELPERS
-function bytesToBase64(bytes){
- let binary="";
- bytes.forEach(b=>binary+=String.fromCharCode(b));
- return btoa(binary);
-}
-
-function base64ToBytes(value){
- const binary=atob(value);
- const bytes=new Uint8Array(binary.length);
- for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
- return bytes;
-}
-
-async function deriveVaultKey(masterPassword,salt){
- const encoder=new TextEncoder();
-
- const material=await crypto.subtle.importKey(
-  "raw",
-  encoder.encode(masterPassword),
-  "PBKDF2",
-  false,
-  ["deriveKey"]
- );
-
- return crypto.subtle.deriveKey(
-  {
-   name:"PBKDF2",
-   salt:salt,
-   iterations:250000,
-   hash:"SHA-256"
-  },
-  material,
-  {
-   name:"AES-GCM",
-   length:256
-  },
-  false,
-  ["encrypt","decrypt"]
- );
-}
-
-async function encryptVaultPassword(password,masterPassword){
- const salt=crypto.getRandomValues(new Uint8Array(16));
- const iv=crypto.getRandomValues(new Uint8Array(12));
-
- const key=await deriveVaultKey(masterPassword,salt);
-
- const encrypted=await crypto.subtle.encrypt(
-  {name:"AES-GCM",iv:iv},
-  key,
-  new TextEncoder().encode(password)
- );
-
- return {
-  passwordCipher:bytesToBase64(new Uint8Array(encrypted)),
-  salt:bytesToBase64(salt),
-  iv:bytesToBase64(iv)
- };
-}
-
-async function decryptVaultPassword(item,masterPassword){
- const salt=base64ToBytes(item.salt);
- const iv=base64ToBytes(item.iv);
- const encrypted=base64ToBytes(item.passwordCipher);
-
- const key=await deriveVaultKey(masterPassword,salt);
-
- const decrypted=await crypto.subtle.decrypt(
-  {name:"AES-GCM",iv:iv},
-  key,
-  encrypted
- );
-
- return new TextDecoder().decode(decrypted);
-}
-
-function getVaultMasterPassword(){
- if(vaultMasterPassword)return vaultMasterPassword;
-
- const master=prompt("আপনার Vault Master Password দিন। প্রথমবার নতুন একটি Master Password তৈরি করুন (কমপক্ষে ৮ অক্ষর)।");
-
- if(!master)return null;
-
- if(master.length<8){
-  alert("Master Password কমপক্ষে ৮ অক্ষরের হতে হবে।");
-  return null;
- }
-
- vaultMasterPassword=master;
- return master;
-}
-
-// SAVE NEW ACCOUNT
-async function saveNewAccount(type){
- if(!currentUser)return;
-
- if(!window.crypto || !crypto.subtle){
-  alert("এই ব্রাউজারে নিরাপদ Encryption সমর্থিত নয়। HTTPS ওয়েবসাইটে ব্যবহার করুন।");
-  return;
- }
-
- const isGmail=type==="gmail";
-
- const name=document.getElementById(
-  isGmail?"gmailAccountName":"facebookAccountName"
- ).value.trim();
-
- const address=document.getElementById(
-  isGmail?"gmailAddress":"facebookAddress"
- ).value.trim();
-
- const password=document.getElementById(
-  isGmail?"gmailPassword":"facebookPassword"
- ).value;
-
- if(!name){
-  alert("আপনার আইডির নাম লিখুন");
-  return;
- }
-
- if(!address||!password){
-  alert("সব তথ্য পূরণ করুন");
-  return;
- }
-
- if(isGmail&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)){
-  alert("সঠিক Gmail Address লিখুন");
-  return;
- }
-
- const master=getVaultMasterPassword();
- if(!master)return;
-
- try{
-  const encrypted=await encryptVaultPassword(password,master);
-
-  await accountRef().add({
-   vaultType:type,
-   accountName:name,
-   address:address,
-   ...encrypted,
-   createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-   updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  document.getElementById(
-   isGmail?"gmailAccountName":"facebookAccountName"
-  ).value="";
-
-  document.getElementById(
-   isGmail?"gmailAddress":"facebookAddress"
-  ).value="";
-
-  document.getElementById(
-   isGmail?"gmailPassword":"facebookPassword"
-  ).value="";
-
-  await loadUserData();
-
-  alert(isGmail?"Gmail Account Saved!":"Facebook Account Saved!");
-
-  openFolder(isGmail?"savedGmail":"savedFacebook");
-
- }catch(e){
-  vaultMasterPassword=null;
-  alert("Save হয়নি: "+friendlyError(e));
- }
-}
-
-// DECRYPT PASSWORD FOR SHOW OR COPY
-async function getDecryptedPassword(item){
- let master=getVaultMasterPassword();
- if(!master)return null;
-
- try{
-  const password=await decryptVaultPassword(item,master);
-  vaultMasterPassword=master;
-  return password;
- }catch(e){
-  vaultMasterPassword=null;
-  alert("Master Password ভুল হয়েছে। আবার চেষ্টা করুন।");
-  return null;
- }
-}
-
-// RENDER NEW ACCOUNT LISTS
-function renderNewAccounts(type){
- const isGmail=type==="gmail";
-
- const box=document.getElementById(
-  isGmail?"gmailAccounts":"facebookAccounts"
- );
-
- const search=document.getElementById(
-  isGmail?"searchGmail":"searchFacebook"
- );
-
- if(!box||!search)return;
-
- const list=data.filter(a=>a.vaultType===type);
- const query=search.value.toLowerCase().trim();
-
- box.innerHTML="";
- let total=0;
-
- list.forEach(item=>{
-  const name=(item.accountName||"").toLowerCase();
-  const address=(item.address||"").toLowerCase();
-
-  if(!name.includes(query)&&!address.includes(query))return;
-
-  total++;
-
-  const card=document.createElement("div");
-  card.className="account";
-
-  const heading=document.createElement("h3");
-  heading.textContent=(isGmail?"📧 ":"📘 ")+(item.accountName||"Unnamed Account");
-
-  const addressLine=document.createElement("p");
-  addressLine.className="info";
-  addressLine.textContent=(isGmail?"Gmail: ":"Gmail / Phone: ")+(item.address||"");
-
-  const pass=document.createElement("p");
-  pass.className="info";
-  pass.textContent="Password: ••••••••";
-
-  const actions=document.createElement("div");
-  actions.className="actions";
-
-  function addButton(label,cls,fn){
-   const b=document.createElement("button");
-   b.textContent=label;
-   b.className=cls;
-   b.onclick=fn;
-   actions.appendChild(b);
-   return b;
-  }
-
-  addButton("COPY ID","secondary",()=>copyText(item.address));
-
-  addButton("COPY PASS","secondary",async()=>{
-   const password=await getDecryptedPassword(item);
-   if(password!==null)await copyText(password);
-  });
-
-  let visible=false;
-
-  addButton("SHOW","green",async function(){
-   const button=this;
-
-   if(!visible){
-    const password=await getDecryptedPassword(item);
-    if(password===null)return;
-
-    visible=true;
-    pass.textContent="Password: "+password;
-    button.textContent="HIDE";
-   }else{
-    visible=false;
-    pass.textContent="Password: ••••••••";
-    button.textContent="SHOW";
-   }
-  });
-
-  addButton("DELETE","danger",async()=>{
-   if(confirm("এই Account মুছে ফেলবেন?")){
-    try{
-     await accountRef().doc(item.id).delete();
-     await loadUserData();
-    }catch(e){
-     alert(friendlyError(e));
-    }
-   }
-  });
-
-  card.append(heading,addressLine,pass,actions);
-  box.appendChild(card);
- });
-
- if(!total){
-  const empty=document.createElement("div");
-  empty.className="empty";
-  empty.innerHTML='<span class="empty-icon">📂</span>No saved accounts found';
-  box.appendChild(empty);
- }
+ "Total Accounts: "+data.length+" | Showing: "+total;
 }
 </script>
+
 </body>
 </html>
