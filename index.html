@@ -58,7 +58,7 @@ button:active{transform:scale(.97)}
 .app-tag{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:8px;background:#153657;border:1px solid #31628e;font-size:11px;color:#d9efff}
 #accounts,#mobileList{max-height:390px;overflow-y:auto;padding:3px;scrollbar-width:thin;scrollbar-color:#1689ff #09172c}
 .account{background:#10233d;border:1px solid #294667;border-radius:11px;padding:10px;margin-top:9px;overflow-wrap:anywhere}
-.account h3{color:#69c3ff;font-size:12px;margin:0 0 7px}
+.account h3{color:#69c3ff;font-size:13px;margin:0 0 7px}
 .account .info{font-size:11px;color:#c3d5e9;margin:5px 0;line-height:1.5}
 .account .actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
 .account .actions button{flex:1;min-width:65px;padding:8px 4px;font-size:10px;border-radius:7px;margin:0}
@@ -136,6 +136,7 @@ button:active{transform:scale(.97)}
   <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
   <h3 class="folder-heading">📱 MOBILE INFORMATION</h3>
   <p class="folder-desc">Live battery status of this device.</p>
+
   <div class="battery-card">
    <div class="battery-top"><b>🔋 BATTERY INFORMATION</b><span class="battery-label" id="batterySupport">Checking...</span></div>
    <div class="battery-percent" id="batteryPercent">--%</div>
@@ -147,13 +148,16 @@ button:active{transform:scale(.97)}
    <p class="battery-status" id="batteryMessage">Battery information loading...</p>
    <button class="secondary battery-refresh" onclick="loadBattery()">↻ REFRESH BATTERY</button>
   </div>
+
   <p class="note">ℹ️ Battery information আপনার নিজের ডিভাইসের ব্রাউজার থেকে নেওয়া হয়। কিছু ব্রাউজারে এই সুবিধা সমর্থিত নয়।</p>
+
   <h3 class="folder-heading">📝 SAVE DEVICE DETAILS</h3>
   <input id="mobileName" placeholder="Mobile Name">
   <input id="mobileModel" placeholder="Mobile Model">
   <input id="mobileNumber" type="tel" placeholder="Mobile Number">
   <input id="mobileNote" placeholder="Extra Notes">
   <button class="main-btn green" onclick="saveMobile()">💾 SAVE MOBILE INFO</button>
+
   <h3 class="folder-heading" style="margin-top:22px">📋 SAVED MOBILE INFO</h3>
   <div id="mobileList"></div>
  </div>
@@ -161,7 +165,8 @@ button:active{transform:scale(.97)}
  <div class="folder-panel hidden" id="addFolder">
   <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
   <h3 class="folder-heading" id="formTitle">➕ ADD NEW ACCOUNT</h3>
-  <p class="folder-desc">Select apps and enter your Gmail details.</p>
+  <p class="folder-desc">Select apps and enter your account details.</p>
+
   <p class="app-title">☑ SELECT ACCOUNT TYPE</p>
   <div class="app-grid" id="appGrid">
    <label class="app-option"><input type="checkbox" value="Free Fire"><span class="app-icon">🔥</span><span class="app-name">Free Fire</span></label>
@@ -174,8 +179,16 @@ button:active{transform:scale(.97)}
    <label class="app-option"><input type="checkbox" value="Google"><span class="app-icon">🌐</span><span class="app-name">Google</span></label>
    <label class="app-option"><input type="checkbox" value="Other"><span class="app-icon">📦</span><span class="app-name">Other</span></label>
   </div>
+
+  <p class="app-title">📝 ACCOUNT NAME</p>
+  <input id="accountName" type="text" placeholder="যেমন: JONY FF MAIN ID">
+
+  <p class="app-title">📧 GMAIL ADDRESS</p>
   <input id="gmail" type="email" placeholder="Enter Gmail Address">
+
+  <p class="app-title">🔑 ACCOUNT PASSWORD</p>
   <input id="password" type="password" placeholder="Enter Account Password">
+
   <button class="secondary" style="width:100%" onclick="togglePassword()">👁 SHOW / HIDE PASSWORD</button>
   <button class="main-btn green" onclick="saveAccount()">💾 SAVE ACCOUNT</button>
   <button class="main-btn secondary hidden" id="cancelEdit" onclick="cancelEdit()">CANCEL EDIT</button>
@@ -185,11 +198,12 @@ button:active{transform:scale(.97)}
   <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
   <h3 class="folder-heading">📁 SAVED ACCOUNTS</h3>
   <p class="folder-desc">Your saved accounts and selected app logos.</p>
-  <input id="search" type="search" placeholder="🔍 Search Gmail..." oninput="render()">
+  <input id="search" type="search" placeholder="🔍 Search Name or Gmail..." oninput="render()">
   <div id="accounts"></div>
   <p id="count"></p>
  </div>
 </div>
+
 <div class="footer">MODE BY JONY © 2026</div>
 </div>
 
@@ -229,6 +243,7 @@ const appInfo={
 function accountRef(){
  return db.collection("users").doc(currentUser.uid).collection("accounts");
 }
+
 function mobileRef(){
  return db.collection("users").doc(currentUser.uid).collection("mobiles");
 }
@@ -246,6 +261,7 @@ function toggleAuthPass(id){
  const p=document.getElementById(id);
  p.type=p.type==="password"?"text":"password";
 }
+
 function toggleSignupPasswords(){
  const a=document.getElementById("signupPass");
  const b=document.getElementById("signupConfirm");
@@ -269,6 +285,7 @@ function friendlyError(error){
  return messages[error.code]||error.message||"কাজটি সম্পন্ন হয়নি।";
 }
 
+// SIGN UP
 async function signup(){
  const name=document.getElementById("signupName").value.trim();
  const email=document.getElementById("signupEmail").value.trim().toLowerCase();
@@ -276,15 +293,29 @@ async function signup(){
  const confirmPass=document.getElementById("signupConfirm").value;
  const error=document.getElementById("signupError");
 
- if(!name||!email||!pass||!confirmPass){error.textContent="সব তথ্য পূরণ করুন";return}
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){error.textContent="সঠিক Email লিখুন";return}
- if(pass.length<8){error.textContent="Password কমপক্ষে ৮ অক্ষরের হতে হবে";return}
- if(pass!==confirmPass){error.textContent="Password মিলছে না";return}
+ if(!name||!email||!pass||!confirmPass){
+  error.textContent="সব তথ্য পূরণ করুন";
+  return;
+ }
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  error.textContent="সঠিক Email লিখুন";
+  return;
+ }
+ if(pass.length<8){
+  error.textContent="Password কমপক্ষে ৮ অক্ষরের হতে হবে";
+  return;
+ }
+ if(pass!==confirmPass){
+  error.textContent="Password মিলছে না";
+  return;
+ }
 
  error.textContent="Account তৈরি হচ্ছে...";
  try{
   const result=await auth.createUserWithEmailAndPassword(email,pass);
   await result.user.updateProfile({displayName:name});
+  await result.user.reload();
+
   document.getElementById("signupName").value="";
   document.getElementById("signupEmail").value="";
   document.getElementById("signupPass").value="";
@@ -294,11 +325,17 @@ async function signup(){
  }
 }
 
+// LOGIN
 async function login(){
  const email=document.getElementById("loginEmail").value.trim().toLowerCase();
  const pass=document.getElementById("loginPass").value;
  const error=document.getElementById("loginError");
- if(!email||!pass){error.textContent="Email ও Password লিখুন";return}
+
+ if(!email||!pass){
+  error.textContent="Email ও Password লিখুন";
+  return;
+ }
+
  error.textContent="Logging in...";
  try{
   await auth.signInWithEmailAndPassword(email,pass);
@@ -307,10 +344,16 @@ async function login(){
  }
 }
 
+// FORGOT PASSWORD
 async function forgotPassword(){
  const email=document.getElementById("loginEmail").value.trim();
  const error=document.getElementById("loginError");
- if(!email){error.textContent="আগে Email লিখুন";return}
+
+ if(!email){
+  error.textContent="আগে Email লিখুন";
+  return;
+ }
+
  try{
   await auth.sendPasswordResetEmail(email);
   error.textContent="Password reset link আপনার Email-এ পাঠানো হয়েছে।";
@@ -319,37 +362,50 @@ async function forgotPassword(){
  }
 }
 
+// LOGOUT
 async function logout(){
- try{await auth.signOut()}catch(e){alert(friendlyError(e))}
+ try{
+  await auth.signOut();
+ }catch(e){
+  alert(friendlyError(e));
+ }
 }
 
+// AUTH STATE
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
+
  if(user){
   document.getElementById("authCard").classList.add("hidden");
   document.getElementById("vault").classList.remove("hidden");
   document.getElementById("welcomeUser").textContent="● "+(user.displayName||user.email);
+
   await loadUserData();
   openFolder("home");
  }else{
   data=[];
   mobiles=[];
   editing=null;
+
   document.getElementById("vault").classList.add("hidden");
   document.getElementById("authCard").classList.remove("hidden");
   document.getElementById("loginPass").value="";
  }
 });
 
+// LOAD FIRESTORE DATA
 async function loadUserData(){
  if(!currentUser)return;
+
  try{
   const [accountSnap,mobileSnap]=await Promise.all([
    accountRef().get(),
    mobileRef().get()
   ]);
+
   data=accountSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
   mobiles=mobileSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+
   render();
   renderMobiles();
  }catch(e){
@@ -357,29 +413,40 @@ async function loadUserData(){
  }
 }
 
+// FOLDER NAVIGATION
 function openFolder(folder){
  if(!currentUser)return;
+
  const home=document.getElementById("folderHome");
+
  if(folder==="home"){
   home.classList.remove("hidden");
+
   ["mobile","add","save"].forEach(name=>{
    document.getElementById(name+"Folder").classList.add("hidden");
    document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.remove("active");
   });
   return;
  }
+
  home.classList.add("hidden");
+
  ["mobile","add","save"].forEach(name=>{
   document.getElementById(name+"Folder").classList.toggle("hidden",name!==folder);
   document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.toggle("active",name===folder);
  });
+
  if(folder==="save")render();
- if(folder==="mobile"){renderMobiles();loadBattery()}
+ if(folder==="mobile"){
+  renderMobiles();
+  loadBattery();
+ }
 }
 
 // BATTERY
 async function loadBattery(){
  const support=document.getElementById("batterySupport");
+
  if(!navigator.getBattery){
   support.textContent="NOT SUPPORTED";
   document.getElementById("batteryPercent").textContent="N/A";
@@ -388,31 +455,41 @@ async function loadBattery(){
   document.getElementById("batteryMessage").textContent="এই ব্রাউজারে Battery API সমর্থিত নয়।";
   return;
  }
+
  try{
   if(!batteryManager){
    batteryManager=await navigator.getBattery();
+
    ["levelchange","chargingchange","chargingtimechange","dischargingtimechange"].forEach(event=>{
     batteryManager.addEventListener(event,updateBatteryDisplay);
    });
   }
+
   updateBatteryDisplay();
- }catch(e){support.textContent="UNAVAILABLE"}
+ }catch(e){
+  support.textContent="UNAVAILABLE";
+ }
 }
 
 function updateBatteryDisplay(){
  if(!batteryManager)return;
+
  const level=Math.round(batteryManager.level*100);
  const isCharging=batteryManager.charging;
+
  document.getElementById("batterySupport").textContent="CONNECTED";
  document.getElementById("batteryPercent").textContent=level+"%";
  document.getElementById("batteryFill").style.width=level+"%";
  document.getElementById("chargingStatus").textContent=isCharging?"⚡ Charging":"🔋 Not Charging";
+
  let remaining="Not available";
+
  if(isCharging&&Number.isFinite(batteryManager.chargingTime)){
   remaining=batteryManager.chargingTime===0?"Fully charged":formatBatteryTime(batteryManager.chargingTime);
  }else if(!isCharging&&Number.isFinite(batteryManager.dischargingTime)&&batteryManager.dischargingTime!==Infinity){
   remaining=formatBatteryTime(batteryManager.dischargingTime);
  }
+
  document.getElementById("batteryTime").textContent=remaining;
  document.getElementById("batteryMessage").textContent=isCharging?"আপনার ফোন বর্তমানে চার্জ হচ্ছে।":"আপনার ফোন বর্তমানে ব্যাটারি ব্যবহার করছে।";
 }
@@ -424,46 +501,74 @@ function formatBatteryTime(seconds){
  return hours>0?hours+"h "+minutes+"m":minutes+" minutes";
 }
 
-// MOBILE INFO FIRESTORE
+// MOBILE INFO
 async function saveMobile(){
  if(!currentUser)return;
+
  const name=document.getElementById("mobileName").value.trim();
  const model=document.getElementById("mobileModel").value.trim();
  const number=document.getElementById("mobileNumber").value.trim();
  const note=document.getElementById("mobileNote").value.trim();
- if(!name&&!model&&!number&&!note){alert("কমপক্ষে একটি তথ্য লিখুন");return}
+
+ if(!name&&!model&&!number&&!note){
+  alert("কমপক্ষে একটি তথ্য লিখুন");
+  return;
+ }
+
  try{
-  await mobileRef().add({name,model,number,note,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-  ["mobileName","mobileModel","mobileNumber","mobileNote"].forEach(id=>document.getElementById(id).value="");
+  await mobileRef().add({
+   name,model,number,note,
+   createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  ["mobileName","mobileModel","mobileNumber","mobileNote"].forEach(id=>{
+   document.getElementById(id).value="";
+  });
+
   await loadUserData();
   alert("Mobile Info Saved!");
- }catch(e){alert(friendlyError(e))}
+ }catch(e){
+  alert(friendlyError(e));
+ }
 }
 
 function renderMobiles(){
  const box=document.getElementById("mobileList");
  box.innerHTML="";
+
  mobiles.forEach(m=>{
   const card=document.createElement("div");
   card.className="account";
+
   const title=document.createElement("h3");
   title.textContent="📱 "+(m.name||"Mobile Device");
+
   const info=document.createElement("p");
   info.className="info";
   info.textContent="Model: "+(m.model||"-")+" | Number: "+(m.number||"-")+" | Note: "+(m.note||"-");
+
   const btn=document.createElement("button");
   btn.className="danger";
   btn.textContent="DELETE";
+
   btn.onclick=async()=>{
    if(confirm("এই Mobile Info মুছে ফেলবেন?")){
-    try{await mobileRef().doc(m.id).delete();await loadUserData()}
-    catch(e){alert(friendlyError(e))}
+    try{
+     await mobileRef().doc(m.id).delete();
+     await loadUserData();
+    }catch(e){
+     alert(friendlyError(e));
+    }
    }
   };
+
   card.append(title,info,btn);
   box.appendChild(card);
  });
- if(!mobiles.length)box.innerHTML='<div class="empty"><span class="empty-icon">📱</span>No mobile information saved</div>';
+
+ if(!mobiles.length){
+  box.innerHTML='<div class="empty"><span class="empty-icon">📱</span>No mobile information saved</div>';
+ }
 }
 
 // ACCOUNT FORM
@@ -471,91 +576,164 @@ function togglePassword(){
  const p=document.getElementById("password");
  p.type=p.type==="password"?"text":"password";
 }
+
 function getSelectedApps(){
  return Array.from(document.querySelectorAll("#appGrid input:checked")).map(i=>i.value);
 }
+
 function setSelectedApps(apps=[]){
- document.querySelectorAll("#appGrid input").forEach(i=>i.checked=apps.includes(i.value));
+ document.querySelectorAll("#appGrid input").forEach(i=>{
+  i.checked=apps.includes(i.value);
+ });
 }
 
+// SAVE ACCOUNT WITH ACCOUNT NAME
 async function saveAccount(){
  if(!currentUser)return;
+
+ const accountName=document.getElementById("accountName").value.trim();
  const gmail=document.getElementById("gmail").value.trim();
  const password=document.getElementById("password").value;
  const apps=getSelectedApps();
- if(!gmail||!password){alert("Gmail এবং Password লিখুন");return}
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmail)){alert("সঠিক Gmail Address লিখুন");return}
- if(!apps.length){alert("কমপক্ষে একটি App-এ টিক দিন");return}
- const entry={gmail,password,apps,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+
+ if(!accountName){
+  alert("Account Name লিখুন");
+  return;
+ }
+
+ if(!gmail||!password){
+  alert("Gmail এবং Password লিখুন");
+  return;
+ }
+
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmail)){
+  alert("সঠিক Gmail Address লিখুন");
+  return;
+ }
+
+ if(!apps.length){
+  alert("কমপক্ষে একটি App-এ টিক দিন");
+  return;
+ }
+
+ const entry={
+  accountName,
+  gmail,
+  password,
+  apps,
+  updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+ };
+
  try{
   if(editing){
    await accountRef().doc(editing).update(entry);
   }else{
-   await accountRef().add({...entry,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+   await accountRef().add({
+    ...entry,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+   });
   }
+
   clearForm();
   await loadUserData();
   openFolder("save");
- }catch(e){alert("Save হয়নি: "+friendlyError(e))}
+
+ }catch(e){
+  alert("Save হয়নি: "+friendlyError(e));
+ }
 }
 
+// CLEAR FORM
 function clearForm(){
+ document.getElementById("accountName").value="";
  document.getElementById("gmail").value="";
  document.getElementById("password").value="";
  document.getElementById("password").type="password";
+
  document.getElementById("formTitle").textContent="➕ ADD NEW ACCOUNT";
  document.getElementById("cancelEdit").classList.add("hidden");
+
  setSelectedApps([]);
  editing=null;
 }
-function cancelEdit(){clearForm();openFolder("save")}
 
+function cancelEdit(){
+ clearForm();
+ openFolder("save");
+}
+
+// EDIT ACCOUNT
 function editAccount(id){
  if(!currentUser)return;
+
  const item=data.find(a=>a.id===id);
  if(!item)return;
+
  editing=id;
+
+ document.getElementById("accountName").value=item.accountName||"";
  document.getElementById("gmail").value=item.gmail||"";
  document.getElementById("password").value=item.password||"";
+
  document.getElementById("formTitle").textContent="✏️ EDIT ACCOUNT";
  document.getElementById("cancelEdit").classList.remove("hidden");
+
  setSelectedApps(item.apps||[]);
  openFolder("add");
 }
 
+// DELETE ACCOUNT
 async function deleteAccount(id){
  if(!currentUser)return;
+
  if(confirm("Are you sure you want to delete?")){
   try{
    await accountRef().doc(id).delete();
    await loadUserData();
    clearForm();
-  }catch(e){alert(friendlyError(e))}
+  }catch(e){
+   alert(friendlyError(e));
+  }
  }
 }
 
+// COPY
 async function copyText(value){
  try{
   await navigator.clipboard.writeText(value);
   alert("Copied successfully!");
- }catch(e){alert("Copy permission required")}
+ }catch(e){
+  alert("Copy permission required");
+ }
 }
 
+// RENDER SAVED ACCOUNTS + SEARCH BY NAME/GMAIL
 function render(){
  const box=document.getElementById("accounts");
  if(!box)return;
- const query=document.getElementById("search").value.toLowerCase();
+
+ const query=document.getElementById("search").value.toLowerCase().trim();
+
  box.innerHTML="";
  let total=0;
+
  data.forEach(a=>{
-  if(!(a.gmail||"").toLowerCase().includes(query))return;
+  const accountName=(a.accountName||"").toLowerCase();
+  const gmail=(a.gmail||"").toLowerCase();
+
+  if(!accountName.includes(query)&&!gmail.includes(query))return;
+
   total++;
+
   const card=document.createElement("div");
   card.className="account";
+
   const heading=document.createElement("h3");
-  heading.textContent="📧 "+a.gmail;
+  heading.textContent="📌 "+(a.accountName||"Unnamed Account");
+
   const appLine=document.createElement("div");
   appLine.className="selected-apps";
+
   (a.apps||[]).forEach(app=>{
    const info=appInfo[app]||appInfo.Other;
    const tag=document.createElement("span");
@@ -563,39 +741,53 @@ function render(){
    tag.textContent=info.icon+" "+info.name;
    appLine.appendChild(tag);
   });
+
   const email=document.createElement("p");
   email.className="info";
   email.textContent="Gmail: "+a.gmail;
+
   const pass=document.createElement("p");
   pass.className="info";
   pass.textContent="Password: ••••••••";
+
   const actions=document.createElement("div");
   actions.className="actions";
+
   function addButton(label,cls,fn){
    const b=document.createElement("button");
-   b.textContent=label;b.className=cls;b.onclick=fn;
+   b.textContent=label;
+   b.className=cls;
+   b.onclick=fn;
    actions.appendChild(b);
   }
+
   addButton("COPY GMAIL","secondary",()=>copyText(a.gmail));
   addButton("COPY PASS","secondary",()=>copyText(a.password));
+
   let visible=false;
+
   addButton("SHOW","green",function(){
    visible=!visible;
    pass.textContent="Password: "+(visible?a.password:"••••••••");
    this.textContent=visible?"HIDE":"SHOW";
   });
+
   addButton("EDIT","secondary",()=>editAccount(a.id));
   addButton("DELETE","danger",()=>deleteAccount(a.id));
+
   card.append(heading,appLine,email,pass,actions);
   box.appendChild(card);
  });
+
  if(!total){
   const empty=document.createElement("div");
   empty.className="empty";
   empty.innerHTML='<span class="empty-icon">📂</span>No saved accounts found';
   box.appendChild(empty);
  }
- document.getElementById("count").textContent="Total Accounts: "+data.length+" | Showing: "+total;
+
+ document.getElementById("count").textContent=
+ "Total Accounts: "+data.length+" | Showing: "+total;
 }
 </script>
 </body>
