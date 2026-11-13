@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1c">
+<title>ONLINE VAULT</title>
+
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;padding:20px;
+ font-family:Arial,sans-serif;color:white;
+ background:radial-gradient(circle at top,#163c70,#080d1c 70%);
+ display:flex;justify-content:center;align-items:flex-start;
+}
+.container{width:100%;max-width:440px;margin:auto}
+.logo{text-align:center;font-size:25px;font-weight:900;letter-spacing:2px;color:#65c6ff;margin-bottom:25px}
+.card{background:rgba(19,35,64,.96);border:1px solid #34577c;border-radius:22px;padding:20px;box-shadow:0 15px 45px #0008}
+h2{text-align:center;margin-top:0}
+.subtitle{text-align:center;color:#9db6d3;font-size:13px}
+input{width:100%;padding:14px;margin:9px 0;background:#09162b;border:1px solid #345477;border-radius:11px;color:white;font-size:14px;outline:none}
+input:focus{border-color:#45aaff}
+button{border:0;border-radius:10px;padding:12px;background:#1689ff;color:white;font-weight:bold;cursor:pointer;margin:5px 0}
+button:active{transform:scale(.97)}
+.main-btn{width:100%;padding:14px;margin-top:12px}
+.secondary{background:#263e60}
+.danger{background:#d83b52}
+.green{background:#159b77}
+.hidden{display:none!important}
+.error{text-align:center;color:#ff7d8e;font-size:13px;min-height:16px}
+.auth-switch{display:flex;gap:8px;margin:15px 0}
+.auth-switch button{flex:1;margin:0;background:#10243e;color:#9db6d3}
+.auth-switch button.active{background:#1689ff;color:white}
+.link{color:#69c3ff;text-align:center;cursor:pointer;font-size:12px;margin:15px 0 5px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:8px}
+.top button{margin:0}
+.folder-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.folder-btn{background:#0b1b32;border:1px solid #345477;border-radius:14px;padding:15px 8px;color:#a9c4e2;font-size:12px;line-height:1.7;margin:0}
+.folder-btn .folder-icon{display:block;font-size:25px}
+.folder-btn.active{background:linear-gradient(145deg,#126ac2,#123a68);border:1px solid #62baff;color:white;box-shadow:0 5px 20px #087cff35}
+.folder-panel{background:#0b192e;border:1px solid #294667;border-radius:15px;padding:15px;min-height:250px}
+.folder-heading{color:#70c5ff;font-size:15px;margin:12px 0 8px}
+.folder-desc{color:#91aaca;font-size:11px;margin:0 0 14px}
+.app-title{color:#b8d5f3;font-size:12px;font-weight:bold;margin:18px 0 10px}
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.app-option{display:flex;align-items:center;gap:8px;background:#10243e;border:1px solid #294667;border-radius:10px;padding:10px 8px;cursor:pointer;min-width:0}
+.app-option:has(input:checked){background:#123b62;border-color:#42aaff}
+.app-option input{width:17px;height:17px;margin:0;accent-color:#1689ff;flex-shrink:0}
+.app-icon{font-size:21px}
+.app-name{font-size:11px;font-weight:bold;overflow-wrap:anywhere}
+.selected-apps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.app-tag{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:8px;background:#153657;border:1px solid #31628e;font-size:11px;color:#d9efff}
+#accounts,#mobileList{max-height:390px;overflow-y:auto;padding:3px;scrollbar-width:thin;scrollbar-color:#1689ff #09172c}
+.account{background:#10233d;border:1px solid #294667;border-radius:11px;padding:10px;margin-top:9px;overflow-wrap:anywhere}
+.account h3{color:#69c3ff;font-size:12px;margin:0 0 7px}
+.account .info{font-size:11px;color:#c3d5e9;margin:5px 0;line-height:1.5}
+.account .actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.account .actions button{flex:1;min-width:65px;padding:8px 4px;font-size:10px;border-radius:7px;margin:0}
+#count{font-size:11px;margin-top:12px;text-align:center;color:#9db6d3}
+.empty{text-align:center;padding:45px 10px;color:#7895b6;font-size:13px}
+.empty-icon{font-size:35px;display:block;margin-bottom:12px}
+.footer{text-align:center;color:#718ba9;font-size:11px;margin:20px}
+.note{background:#10243e;border:1px solid #294667;border-radius:10px;padding:10px;color:#9db6d3;font-size:11px;line-height:1.5;margin-top:12px}
+.battery-card{background:linear-gradient(145deg,#102e50,#0b1b32);border:1px solid #3472a6;border-radius:16px;padding:16px;margin:15px 0}
+.battery-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.battery-label{font-size:12px;color:#a9c9e8}
+.battery-percent{font-size:36px;font-weight:900;color:#65c6ff;text-align:center;margin:10px 0}
+.battery-bar{width:100%;height:13px;background:#071326;border-radius:20px;overflow:hidden;border:1px solid #345477}
+.battery-fill{height:100%;width:0%;background:linear-gradient(90deg,#159b77,#65e6b5);border-radius:20px;transition:width .4s}
+.battery-details{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.battery-detail{background:#091a30;border:1px solid #294667;border-radius:10px;padding:10px;text-align:center}
+.battery-detail span{display:block;color:#8caaca;font-size:10px;margin-bottom:6px}
+.battery-detail b{font-size:12px;color:#e1f1ff}
+.battery-status{text-align:center;font-size:12px;color:#a9c9e8;margin-top:13px}
+.battery-refresh{width:100%;margin-top:12px}
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="logo">🔐 ONLINE VAULT</div>
+
+<div class="card" id="authCard">
+ <div class="auth-switch">
+  <button id="loginTab" class="active" onclick="showAuth('login')">LOGIN</button>
+  <button id="signupTab" onclick="showAuth('signup')">SIGN UP</button>
+ </div>
+
+ <div id="loginForm">
+  <h2>WELCOME BACK 👋</h2>
+  <p class="subtitle">LOGIN TO YOUR VAULT</p>
+  <input id="loginEmail" type="email" placeholder="Enter Email Address">
+  <input id="loginPass" type="password" placeholder="Enter Password">
+  <button class="secondary" style="width:100%" onclick="toggleAuthPass('loginPass')">👁 SHOW / HIDE PASSWORD</button>
+  <button class="main-btn" onclick="login()">LOGIN 🔓</button>
+  <p class="link" onclick="forgotPassword()">Forgot Password?</p>
+  <p class="error" id="loginError"></p>
+ </div>
+
+ <div id="signupForm" class="hidden">
+  <h2>CREATE ACCOUNT ✨</h2>
+  <p class="subtitle">JOIN JONY HACKER VAULT</p>
+  <input id="signupName" type="text" placeholder="Your Full Name">
+  <input id="signupEmail" type="email" placeholder="Email Address">
+  <input id="signupPass" type="password" placeholder="Create Password (8+ characters)">
+  <input id="signupConfirm" type="password" placeholder="Confirm Password">
+  <button class="secondary" style="width:100%" onclick="toggleSignupPasswords()">👁 SHOW / HIDE PASSWORD</button>
+  <button class="main-btn green" onclick="signup()">CREATE ACCOUNT</button>
+  <p class="error" id="signupError"></p>
+ </div>
+ <p class="note">☁️ Firebase Online Account System</p>
+</div>
+
+<div class="card hidden" id="vault">
+ <div class="top">
+  <div>
+   <b>🔐 MY PASSWORD VAULT</b>
+   <p style="color:#63e6b0;font-size:11px;margin:5px 0" id="welcomeUser">● PRIVATE SPACE</p>
+  </div>
+  <button class="danger" onclick="logout()">LOGOUT ↗</button>
+ </div>
+
+ <div class="folder-nav" id="folderHome">
+  <button class="folder-btn" id="mobileTab" onclick="openFolder('mobile')"><span class="folder-icon">📱</span>MOBILE INFO</button>
+  <button class="folder-btn" id="addTab" onclick="openFolder('add')"><span class="folder-icon">📂</span>ADD ACCOUNT</button>
+  <button class="folder-btn" id="saveTab" onclick="openFolder('save')"><span class="folder-icon">📁</span>SAVE ACCOUNT</button>
+ </div>
+
+ <div class="folder-panel hidden" id="mobileFolder">
+  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
+  <h3 class="folder-heading">📱 MOBILE INFORMATION</h3>
+  <p class="folder-desc">Live battery status of this device.</p>
+  <div class="battery-card">
+   <div class="battery-top"><b>🔋 BATTERY INFORMATION</b><span class="battery-label" id="batterySupport">Checking...</span></div>
+   <div class="battery-percent" id="batteryPercent">--%</div>
+   <div class="battery-bar"><div class="battery-fill" id="batteryFill"></div></div>
+   <div class="battery-details">
+    <div class="battery-detail"><span>⚡ CHARGING STATUS</span><b id="chargingStatus">Checking...</b></div>
+    <div class="battery-detail"><span>⏱ TIME REMAINING</span><b id="batteryTime">--</b></div>
+   </div>
+   <p class="battery-status" id="batteryMessage">Battery information loading...</p>
+   <button class="secondary battery-refresh" onclick="loadBattery()">↻ REFRESH BATTERY</button>
+  </div>
+  <p class="note">ℹ️ Battery information আপনার নিজের ডিভাইসের ব্রাউজার থেকে নেওয়া হয়। কিছু ব্রাউজারে এই সুবিধা সমর্থিত নয়।</p>
+  <h3 class="folder-heading">📝 SAVE DEVICE DETAILS</h3>
+  <input id="mobileName" placeholder="Mobile Name">
+  <input id="mobileModel" placeholder="Mobile Model">
+  <input id="mobileNumber" type="tel" placeholder="Mobile Number">
+  <input id="mobileNote" placeholder="Extra Notes">
+  <button class="main-btn green" onclick="saveMobile()">💾 SAVE MOBILE INFO</button>
+  <h3 class="folder-heading" style="margin-top:22px">📋 SAVED MOBILE INFO</h3>
+  <div id="mobileList"></div>
+ </div>
+
+ <div class="folder-panel hidden" id="addFolder">
+  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
+  <h3 class="folder-heading" id="formTitle">➕ ADD NEW ACCOUNT</h3>
+  <p class="folder-desc">Select apps and enter your Gmail details.</p>
+  <p class="app-title">☑ SELECT ACCOUNT TYPE</p>
+  <div class="app-grid" id="appGrid">
+   <label class="app-option"><input type="checkbox" value="Free Fire"><span class="app-icon">🔥</span><span class="app-name">Free Fire</span></label>
+   <label class="app-option"><input type="checkbox" value="Clash of Clans"><span class="app-icon">⚔️</span><span class="app-name">Clash of Clans</span></label>
+   <label class="app-option"><input type="checkbox" value="Facebook"><span class="app-icon">📘</span><span class="app-name">Facebook</span></label>
+   <label class="app-option"><input type="checkbox" value="Telegram"><span class="app-icon">✈️</span><span class="app-name">Telegram</span></label>
+   <label class="app-option"><input type="checkbox" value="TikTok"><span class="app-icon">🎵</span><span class="app-name">TikTok</span></label>
+   <label class="app-option"><input type="checkbox" value="Instagram"><span class="app-icon">📸</span><span class="app-name">Instagram</span></label>
+   <label class="app-option"><input type="checkbox" value="YouTube"><span class="app-icon">▶️</span><span class="app-name">YouTube</span></label>
+   <label class="app-option"><input type="checkbox" value="Google"><span class="app-icon">🌐</span><span class="app-name">Google</span></label>
+   <label class="app-option"><input type="checkbox" value="Other"><span class="app-icon">📦</span><span class="app-name">Other</span></label>
+  </div>
+  <input id="gmail" type="email" placeholder="Enter Gmail Address">
+  <input id="password" type="password" placeholder="Enter Account Password">
+  <button class="secondary" style="width:100%" onclick="togglePassword()">👁 SHOW / HIDE PASSWORD</button>
+  <button class="main-btn green" onclick="saveAccount()">💾 SAVE ACCOUNT</button>
+  <button class="main-btn secondary hidden" id="cancelEdit" onclick="cancelEdit()">CANCEL EDIT</button>
+ </div>
+
+ <div class="folder-panel hidden" id="saveFolder">
+  <button class="secondary" onclick="openFolder('home')">← BACK TO FOLDERS</button>
+  <h3 class="folder-heading">📁 SAVED ACCOUNTS</h3>
+  <p class="folder-desc">Your saved accounts and selected app logos.</p>
+  <input id="search" type="search" placeholder="🔍 Search Gmail..." oninput="render()">
+  <div id="accounts"></div>
+  <p id="count"></p>
+ </div>
+</div>
+<div class="footer">MODE BY JONY © 2026</div>
+</div>
+
+<script>
+// FIREBASE CONFIGURATION
+const firebaseConfig = {
+ apiKey: "AIzaSyBYqiO6YbRs8PQElrstWTSnqdMTnqZa2bc",
+ authDomain: "jony-7fa29.firebaseapp.com",
+ projectId: "jony-7fa29",
+ storageBucket: "jony-7fa29.firebasestorage.app",
+ messagingSenderId: "782587331219",
+ appId: "1:782587331219:web:d904098cc12c4507528366"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser=null;
+let data=[];
+let mobiles=[];
+let editing=null;
+let batteryManager=null;
+
+const appInfo={
+ "Free Fire":{icon:"🔥",name:"Free Fire"},
+ "Clash of Clans":{icon:"⚔️",name:"Clash of Clans"},
+ "Facebook":{icon:"📘",name:"Facebook"},
+ "Telegram":{icon:"✈️",name:"Telegram"},
+ "TikTok":{icon:"🎵",name:"TikTok"},
+ "Instagram":{icon:"📸",name:"Instagram"},
+ "YouTube":{icon:"▶️",name:"YouTube"},
+ "Google":{icon:"🌐",name:"Google"},
+ "Other":{icon:"📦",name:"Other"}
+};
+
+function accountRef(){
+ return db.collection("users").doc(currentUser.uid).collection("accounts");
+}
+function mobileRef(){
+ return db.collection("users").doc(currentUser.uid).collection("mobiles");
+}
+
+function showAuth(type){
+ document.getElementById("loginForm").classList.toggle("hidden",type!=="login");
+ document.getElementById("signupForm").classList.toggle("hidden",type!=="signup");
+ document.getElementById("loginTab").classList.toggle("active",type==="login");
+ document.getElementById("signupTab").classList.toggle("active",type==="signup");
+ document.getElementById("loginError").textContent="";
+ document.getElementById("signupError").textContent="";
+}
+
+function toggleAuthPass(id){
+ const p=document.getElementById(id);
+ p.type=p.type==="password"?"text":"password";
+}
+function toggleSignupPasswords(){
+ const a=document.getElementById("signupPass");
+ const b=document.getElementById("signupConfirm");
+ const show=a.type==="password";
+ a.type=show?"text":"password";
+ b.type=show?"text":"password";
+}
+
+function friendlyError(error){
+ const messages={
+  "auth/email-already-in-use":"এই Email দিয়ে আগে অ্যাকাউন্ট খোলা হয়েছে।",
+  "auth/invalid-email":"সঠিক Email লিখুন।",
+  "auth/weak-password":"Password আরও শক্তিশালী করুন।",
+  "auth/user-not-found":"এই Email দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।",
+  "auth/wrong-password":"ভুল Password।",
+  "auth/invalid-credential":"Email অথবা Password ভুল।",
+  "auth/network-request-failed":"ইন্টারনেট সংযোগ পরীক্ষা করুন।",
+  "auth/too-many-requests":"অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে চেষ্টা করুন।",
+  "permission-denied":"ডাটাবেসের Rules পরীক্ষা করুন।"
+ };
+ return messages[error.code]||error.message||"কাজটি সম্পন্ন হয়নি।";
+}
+
+async function signup(){
+ const name=document.getElementById("signupName").value.trim();
+ const email=document.getElementById("signupEmail").value.trim().toLowerCase();
+ const pass=document.getElementById("signupPass").value;
+ const confirmPass=document.getElementById("signupConfirm").value;
+ const error=document.getElementById("signupError");
+
+ if(!name||!email||!pass||!confirmPass){error.textContent="সব তথ্য পূরণ করুন";return}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){error.textContent="সঠিক Email লিখুন";return}
+ if(pass.length<8){error.textContent="Password কমপক্ষে ৮ অক্ষরের হতে হবে";return}
+ if(pass!==confirmPass){error.textContent="Password মিলছে না";return}
+
+ error.textContent="Account তৈরি হচ্ছে...";
+ try{
+  const result=await auth.createUserWithEmailAndPassword(email,pass);
+  await result.user.updateProfile({displayName:name});
+  document.getElementById("signupName").value="";
+  document.getElementById("signupEmail").value="";
+  document.getElementById("signupPass").value="";
+  document.getElementById("signupConfirm").value="";
+ }catch(e){
+  error.textContent=friendlyError(e);
+ }
+}
+
+async function login(){
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const pass=document.getElementById("loginPass").value;
+ const error=document.getElementById("loginError");
+ if(!email||!pass){error.textContent="Email ও Password লিখুন";return}
+ error.textContent="Logging in...";
+ try{
+  await auth.signInWithEmailAndPassword(email,pass);
+ }catch(e){
+  error.textContent=friendlyError(e);
+ }
+}
+
+async function forgotPassword(){
+ const email=document.getElementById("loginEmail").value.trim();
+ const error=document.getElementById("loginError");
+ if(!email){error.textContent="আগে Email লিখুন";return}
+ try{
+  await auth.sendPasswordResetEmail(email);
+  error.textContent="Password reset link আপনার Email-এ পাঠানো হয়েছে।";
+ }catch(e){
+  error.textContent=friendlyError(e);
+ }
+}
+
+async function logout(){
+ try{await auth.signOut()}catch(e){alert(friendlyError(e))}
+}
+
+auth.onAuthStateChanged(async user=>{
+ currentUser=user;
+ if(user){
+  document.getElementById("authCard").classList.add("hidden");
+  document.getElementById("vault").classList.remove("hidden");
+  document.getElementById("welcomeUser").textContent="● "+(user.displayName||user.email);
+  await loadUserData();
+  openFolder("home");
+ }else{
+  data=[];
+  mobiles=[];
+  editing=null;
+  document.getElementById("vault").classList.add("hidden");
+  document.getElementById("authCard").classList.remove("hidden");
+  document.getElementById("loginPass").value="";
+ }
+});
+
+async function loadUserData(){
+ if(!currentUser)return;
+ try{
+  const [accountSnap,mobileSnap]=await Promise.all([
+   accountRef().get(),
+   mobileRef().get()
+  ]);
+  data=accountSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  mobiles=mobileSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  render();
+  renderMobiles();
+ }catch(e){
+  alert("ডাটা লোড হয়নি: "+friendlyError(e));
+ }
+}
+
+function openFolder(folder){
+ if(!currentUser)return;
+ const home=document.getElementById("folderHome");
+ if(folder==="home"){
+  home.classList.remove("hidden");
+  ["mobile","add","save"].forEach(name=>{
+   document.getElementById(name+"Folder").classList.add("hidden");
+   document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.remove("active");
+  });
+  return;
+ }
+ home.classList.add("hidden");
+ ["mobile","add","save"].forEach(name=>{
+  document.getElementById(name+"Folder").classList.toggle("hidden",name!==folder);
+  document.getElementById(name==="mobile"?"mobileTab":name+"Tab").classList.toggle("active",name===folder);
+ });
+ if(folder==="save")render();
+ if(folder==="mobile"){renderMobiles();loadBattery()}
+}
+
+// BATTERY
+async function loadBattery(){
+ const support=document.getElementById("batterySupport");
+ if(!navigator.getBattery){
+  support.textContent="NOT SUPPORTED";
+  document.getElementById("batteryPercent").textContent="N/A";
+  document.getElementById("chargingStatus").textContent="Unavailable";
+  document.getElementById("batteryTime").textContent="--";
+  document.getElementById("batteryMessage").textContent="এই ব্রাউজারে Battery API সমর্থিত নয়।";
+  return;
+ }
+ try{
+  if(!batteryManager){
+   batteryManager=await navigator.getBattery();
+   ["levelchange","chargingchange","chargingtimechange","dischargingtimechange"].forEach(event=>{
+    batteryManager.addEventListener(event,updateBatteryDisplay);
+   });
+  }
+  updateBatteryDisplay();
+ }catch(e){support.textContent="UNAVAILABLE"}
+}
+
+function updateBatteryDisplay(){
+ if(!batteryManager)return;
+ const level=Math.round(batteryManager.level*100);
+ const isCharging=batteryManager.charging;
+ document.getElementById("batterySupport").textContent="CONNECTED";
+ document.getElementById("batteryPercent").textContent=level+"%";
+ document.getElementById("batteryFill").style.width=level+"%";
+ document.getElementById("chargingStatus").textContent=isCharging?"⚡ Charging":"🔋 Not Charging";
+ let remaining="Not available";
+ if(isCharging&&Number.isFinite(batteryManager.chargingTime)){
+  remaining=batteryManager.chargingTime===0?"Fully charged":formatBatteryTime(batteryManager.chargingTime);
+ }else if(!isCharging&&Number.isFinite(batteryManager.dischargingTime)&&batteryManager.dischargingTime!==Infinity){
+  remaining=formatBatteryTime(batteryManager.dischargingTime);
+ }
+ document.getElementById("batteryTime").textContent=remaining;
+ document.getElementById("batteryMessage").textContent=isCharging?"আপনার ফোন বর্তমানে চার্জ হচ্ছে।":"আপনার ফোন বর্তমানে ব্যাটারি ব্যবহার করছে।";
+}
+
+function formatBatteryTime(seconds){
+ const total=Math.round(seconds/60);
+ const hours=Math.floor(total/60);
+ const minutes=total%60;
+ return hours>0?hours+"h "+minutes+"m":minutes+" minutes";
+}
+
+// MOBILE INFO FIRESTORE
+async function saveMobile(){
+ if(!currentUser)return;
+ const name=document.getElementById("mobileName").value.trim();
+ const model=document.getElementById("mobileModel").value.trim();
+ const number=document.getElementById("mobileNumber").value.trim();
+ const note=document.getElementById("mobileNote").value.trim();
+ if(!name&&!model&&!number&&!note){alert("কমপক্ষে একটি তথ্য লিখুন");return}
+ try{
+  await mobileRef().add({name,model,number,note,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  ["mobileName","mobileModel","mobileNumber","mobileNote"].forEach(id=>document.getElementById(id).value="");
+  await loadUserData();
+  alert("Mobile Info Saved!");
+ }catch(e){alert(friendlyError(e))}
+}
+
+function renderMobiles(){
+ const box=document.getElementById("mobileList");
+ box.innerHTML="";
+ mobiles.forEach(m=>{
+  const card=document.createElement("div");
+  card.className="account";
+  const title=document.createElement("h3");
+  title.textContent="📱 "+(m.name||"Mobile Device");
+  const info=document.createElement("p");
+  info.className="info";
+  info.textContent="Model: "+(m.model||"-")+" | Number: "+(m.number||"-")+" | Note: "+(m.note||"-");
+  const btn=document.createElement("button");
+  btn.className="danger";
+  btn.textContent="DELETE";
+  btn.onclick=async()=>{
+   if(confirm("এই Mobile Info মুছে ফেলবেন?")){
+    try{await mobileRef().doc(m.id).delete();await loadUserData()}
+    catch(e){alert(friendlyError(e))}
+   }
+  };
+  card.append(title,info,btn);
+  box.appendChild(card);
+ });
+ if(!mobiles.length)box.innerHTML='<div class="empty"><span class="empty-icon">📱</span>No mobile information saved</div>';
+}
+
+// ACCOUNT FORM
+function togglePassword(){
+ const p=document.getElementById("password");
+ p.type=p.type==="password"?"text":"password";
+}
+function getSelectedApps(){
+ return Array.from(document.querySelectorAll("#appGrid input:checked")).map(i=>i.value);
+}
+function setSelectedApps(apps=[]){
+ document.querySelectorAll("#appGrid input").forEach(i=>i.checked=apps.includes(i.value));
+}
+
+async function saveAccount(){
+ if(!currentUser)return;
+ const gmail=document.getElementById("gmail").value.trim();
+ const password=document.getElementById("password").value;
+ const apps=getSelectedApps();
+ if(!gmail||!password){alert("Gmail এবং Password লিখুন");return}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmail)){alert("সঠিক Gmail Address লিখুন");return}
+ if(!apps.length){alert("কমপক্ষে একটি App-এ টিক দিন");return}
+ const entry={gmail,password,apps,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+ try{
+  if(editing){
+   await accountRef().doc(editing).update(entry);
+  }else{
+   await accountRef().add({...entry,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  }
+  clearForm();
+  await loadUserData();
+  openFolder("save");
+ }catch(e){alert("Save হয়নি: "+friendlyError(e))}
+}
+
+function clearForm(){
+ document.getElementById("gmail").value="";
+ document.getElementById("password").value="";
+ document.getElementById("password").type="password";
+ document.getElementById("formTitle").textContent="➕ ADD NEW ACCOUNT";
+ document.getElementById("cancelEdit").classList.add("hidden");
+ setSelectedApps([]);
+ editing=null;
+}
+function cancelEdit(){clearForm();openFolder("save")}
+
+function editAccount(id){
+ if(!currentUser)return;
+ const item=data.find(a=>a.id===id);
+ if(!item)return;
+ editing=id;
+ document.getElementById("gmail").value=item.gmail||"";
+ document.getElementById("password").value=item.password||"";
+ document.getElementById("formTitle").textContent="✏️ EDIT ACCOUNT";
+ document.getElementById("cancelEdit").classList.remove("hidden");
+ setSelectedApps(item.apps||[]);
+ openFolder("add");
+}
+
+async function deleteAccount(id){
+ if(!currentUser)return;
+ if(confirm("Are you sure you want to delete?")){
+  try{
+   await accountRef().doc(id).delete();
+   await loadUserData();
+   clearForm();
+  }catch(e){alert(friendlyError(e))}
+ }
+}
+
+async function copyText(value){
+ try{
+  await navigator.clipboard.writeText(value);
+  alert("Copied successfully!");
+ }catch(e){alert("Copy permission required")}
+}
+
+function render(){
+ const box=document.getElementById("accounts");
+ if(!box)return;
+ const query=document.getElementById("search").value.toLowerCase();
+ box.innerHTML="";
+ let total=0;
+ data.forEach(a=>{
+  if(!(a.gmail||"").toLowerCase().includes(query))return;
+  total++;
+  const card=document.createElement("div");
+  card.className="account";
+  const heading=document.createElement("h3");
+  heading.textContent="📧 "+a.gmail;
+  const appLine=document.createElement("div");
+  appLine.className="selected-apps";
+  (a.apps||[]).forEach(app=>{
+   const info=appInfo[app]||appInfo.Other;
+   const tag=document.createElement("span");
+   tag.className="app-tag";
+   tag.textContent=info.icon+" "+info.name;
+   appLine.appendChild(tag);
+  });
+  const email=document.createElement("p");
+  email.className="info";
+  email.textContent="Gmail: "+a.gmail;
+  const pass=document.createElement("p");
+  pass.className="info";
+  pass.textContent="Password: ••••••••";
+  const actions=document.createElement("div");
+  actions.className="actions";
+  function addButton(label,cls,fn){
+   const b=document.createElement("button");
+   b.textContent=label;b.className=cls;b.onclick=fn;
+   actions.appendChild(b);
+  }
+  addButton("COPY GMAIL","secondary",()=>copyText(a.gmail));
+  addButton("COPY PASS","secondary",()=>copyText(a.password));
+  let visible=false;
+  addButton("SHOW","green",function(){
+   visible=!visible;
+   pass.textContent="Password: "+(visible?a.password:"••••••••");
+   this.textContent=visible?"HIDE":"SHOW";
+  });
+  addButton("EDIT","secondary",()=>editAccount(a.id));
+  addButton("DELETE","danger",()=>deleteAccount(a.id));
+  card.append(heading,appLine,email,pass,actions);
+  box.appendChild(card);
+ });
+ if(!total){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.innerHTML='<span class="empty-icon">📂</span>No saved accounts found';
+  box.appendChild(empty);
+ }
+ document.getElementById("count").textContent="Total Accounts: "+data.length+" | Showing: "+total;
+}
+</script>
+</body>
+</html>
