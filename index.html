@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17123b">
+<meta name="theme-color" content="#0b1020">
 <title>ONLINE VAULT</title>
 
 <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
@@ -14,103 +14,193 @@
 
 <style>
 *{box-sizing:border-box}
-:root{--bg:#100d2b;--panel:#211b49;--line:#51447f;--text:#f5f2ff;--muted:#aaa4ce;--pink:#ff8b9d;--blue:#68caff;--green:#20c69b}
-body{margin:0;min-height:100vh;padding:20px 15px 35px;font-family:Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 0%,#34317d 0,transparent 45%),radial-gradient(ellipse at 90% 20%,#49246f 0,transparent 38%),linear-gradient(145deg,#111039,#09091c 75%);display:flex;justify-content:center}
-.container{width:100%;max-width:490px;margin:auto}
+:root{
+ --bg:#0b1020;
+ --panel:#121a2b;
+ --panel2:#19243a;
+ --line:#283750;
+ --text:#f2f5ff;
+ --muted:#8798b4;
+ --blue:#648cff;
+ --cyan:#43d5e9;
+ --green:#30d5a0;
+ --red:#fa6484;
+}
+body{
+ margin:0;
+ padding:12px 12px 80px;
+ min-height:100vh;
+ font-family:Arial,sans-serif;
+ color:var(--text);
+ background:
+ radial-gradient(ellipse at 10% 0%,#1d3155,transparent 38%),
+ #0b1020;
+}
+button,input{font-family:inherit}
+button{cursor:pointer;border:0;color:white;border-radius:9px;padding:10px;background:#334b83;font-weight:bold}
+button:active{transform:scale(.97)}
+input{
+ width:100%;padding:11px;margin:5px 0;
+ background:#0b1425;border:1px solid #293b57;
+ border-radius:9px;color:white;outline:none;font-size:12px;
+}
+input:focus{border-color:var(--blue)}
 .hidden{display:none!important}
-.brand{font-weight:900;letter-spacing:2px;color:#8dd7ff;font-size:23px;margin:5px 3px 22px}
-.brand small{display:block;font-size:9px;letter-spacing:4px;color:#aaa4ce;margin-top:5px}
-.card{background:linear-gradient(145deg,rgba(43,35,91,.97),rgba(24,24,61,.98));border:1px solid #554982;border-radius:23px;padding:20px;box-shadow:0 18px 50px #0006;margin-bottom:16px}
-h2{text-align:center;font-size:21px}
-.subtitle{text-align:center;color:var(--muted);font-size:11px;letter-spacing:2px;margin-bottom:22px}
-input{width:100%;padding:14px;margin:7px 0;background:#11132f;border:1px solid #514777;border-radius:12px;color:white;font-size:14px;outline:none}
-input:focus{border-color:#68caff}
-button{border:0;border-radius:12px;padding:13px;background:#5550b5;color:white;font-weight:bold;cursor:pointer;margin:5px 0}
-button:active{transform:scale(.98)}
-.main-btn{width:100%;padding:15px;margin-top:10px}
-.green{background:linear-gradient(110deg,#079d82,#13b77c)}
-.secondary{background:#34305f}
-.danger{background:#c94466}
-.error{text-align:center;color:#ff8299;font-size:12px;min-height:15px}
-.auth-switch{display:flex;gap:8px;margin-bottom:18px}
-.auth-switch button{flex:1;background:#17183c;color:#aaa4ce}
-.auth-switch button.active{background:#6258c9;color:white}
-.link{color:#83caff;text-align:center;cursor:pointer;font-size:12px;margin:16px}
-.input-wrap{position:relative;margin:12px 0}
-.input-wrap input{padding-left:42px;height:49px;margin:0}
-.input-icon{position:absolute;left:14px;top:16px}
-.pass-toggle{position:absolute;right:8px;top:4px;background:transparent}
-.note{background:#171b40;border:1px solid #454274;border-radius:12px;padding:12px;color:#aaaed0;font-size:11px;line-height:1.6;margin-top:12px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}
-.header p{font-size:11px;color:#70e2b8;margin:5px 0}
-.header button{font-size:11px}
-.welcome{font-size:12px;color:#bcb7e3;margin-bottom:15px}
-.storage-card{background:linear-gradient(140deg,#34266c,#1b255c);border:1px solid #6356a0;border-radius:19px;padding:18px;margin:12px 0 17px}
-.storage-top{display:flex;justify-content:space-between;align-items:center}
-.storage-top span{font-size:11px;color:#c5bde9}
-.storage-number{text-align:center;font-size:35px;font-weight:900;margin:14px 0 2px}
-.storage-caption{text-align:center;color:#b4add9;font-size:10px}
-.progress{height:8px;background:#11132f;border-radius:20px;overflow:hidden;margin:15px 0 8px}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#b55bdb,#ff8b9d);border-radius:20px}
-.storage-foot{display:flex;justify-content:space-between;color:#bdb5e0;font-size:10px}
-.cloud-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:13px 0 20px}
-.cloud-item{background:linear-gradient(145deg,#30285e,#1a2047);border:1px solid #494176;border-radius:13px;padding:12px 7px;text-align:center;min-width:0}
-.cloud-icon{font-size:22px;margin-bottom:7px}
-.cloud-item b{font-size:10px;display:block}
-.cloud-item small{display:block;color:#a8a2cb;font-size:9px;margin-top:5px;overflow-wrap:anywhere}
-.section-title{font-size:14px;font-weight:bold;margin:20px 0 12px;color:#f1eaff}
-.folder-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.folder-btn{background:linear-gradient(145deg,#302958,#1a2043);border:1px solid #494176;border-radius:15px;padding:14px 11px;text-align:left;color:white;min-height:100px;margin:0}
-.folder-icon{display:block;font-size:26px;margin-bottom:12px}
-.folder-btn b{display:block;font-size:12px}
-.folder-btn small{display:block;color:#aaa4ce;font-size:10px;margin-top:5px}
-.folder-panel{background:linear-gradient(145deg,#251f50,#141a39);border:1px solid #514777;border-radius:18px;padding:15px;min-height:250px}
-.folder-heading{color:#83caff;font-size:16px;margin:13px 0}
-.folder-desc{color:#aaa4ce;font-size:11px;line-height:1.6}
-.app-title{color:#c4bce9;font-size:12px;font-weight:bold;margin:17px 0 10px}
-.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.app-option{display:flex;align-items:center;gap:7px;background:#171b3e;border:1px solid #454274;border-radius:10px;padding:10px 7px;font-size:11px}
-.app-option input{width:16px;height:16px;margin:0;accent-color:#8c77ff}
-.saved-folder{background:linear-gradient(145deg,#302958,#1a2043);border:1px solid #494176;border-radius:13px;padding:12px;margin-top:10px;display:flex;align-items:center;gap:11px;cursor:pointer}
-.saved-folder-icon{width:45px;height:45px;border-radius:11px;background:#41366c;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0}
+.container{max-width:490px;width:100%;margin:auto}
+.brand{
+ display:flex;align-items:center;gap:9px;
+ margin:3px 2px 16px;font-size:17px;font-weight:900;
+ letter-spacing:1px;
+}
+.brand-icon{
+ width:36px;height:36px;border-radius:11px;
+ display:grid;place-items:center;
+ background:linear-gradient(135deg,#527cff,#9164ec);
+ font-size:20px;
+}
+.brand small{display:block;font-size:8px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+.card{
+ background:#121b2d;border:1px solid #293951;
+ border-radius:16px;padding:15px;margin-bottom:12px;
+}
+h2{text-align:center;font-size:19px}
+.subtitle{text-align:center;color:var(--muted);font-size:9px;letter-spacing:2px;margin-bottom:17px}
+.main-btn{width:100%;padding:12px;margin-top:8px}
+.green{background:linear-gradient(110deg,#139c80,#29c99b)}
+.secondary{background:#283b58}
+.danger{background:#b83d60}
+.error{text-align:center;color:#ff8299;font-size:11px;min-height:14px}
+.auth-switch{display:flex;gap:7px;margin-bottom:15px}
+.auth-switch button{flex:1;background:#1a263b;color:#a9b7ce}
+.auth-switch button.active{background:linear-gradient(110deg,#5278ed,#8761df);color:white}
+.link{color:#8cbaff;text-align:center;font-size:11px;cursor:pointer;margin:13px}
+.input-wrap{position:relative;margin:8px 0}
+.input-wrap input{padding-left:36px;height:42px}
+.input-icon{position:absolute;left:12px;top:13px;font-size:13px}
+.pass-toggle{position:absolute;right:5px;top:3px;background:transparent}
+.note{background:#18243a;border:1px solid #30425e;border-radius:9px;padding:10px;color:#9eafc8;font-size:10px;line-height:1.6;margin-top:10px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.header b{font-size:12px}
+.header p{font-size:9px;color:var(--green);margin:4px 0}
+.header button{font-size:9px;padding:8px 11px}
+.welcome{font-size:10px;color:#a6b5ce;margin:5px 0 12px}
+.hero{
+ background:linear-gradient(120deg,#345ab5,#6755c2);
+ border-radius:14px;padding:13px 15px;margin-bottom:12px;
+ display:flex;justify-content:space-between;align-items:center;
+}
+.hero-label{font-size:9px;letter-spacing:1px;color:#e1e8ff}
+.hero-number{font-size:28px;font-weight:900;margin-top:5px}
+.hero-caption{font-size:9px;color:#dce3ff}
+.hero-icon{font-size:42px;opacity:.8}
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 16px}
+.quick-item{
+ background:#17243a;border:1px solid #2a3d59;
+ border-radius:10px;padding:9px 4px;text-align:center;
+}
+.quick-item span{font-size:18px;display:block;margin-bottom:5px}
+.quick-item b{font-size:9px;display:block}
+.quick-item small{font-size:8px;color:var(--muted);display:block;margin-top:3px}
+.section-title{
+ font-size:11px;font-weight:bold;margin:16px 0 9px;
+ display:flex;justify-content:space-between;align-items:center;
+}
+.section-title span{color:#80adff;font-size:9px;cursor:pointer}
+.folder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.folder-btn{
+ background:#17243a;border:1px solid #2b3e5a;
+ border-radius:12px;padding:11px 10px;text-align:left;
+ color:white;min-height:73px;margin:0;
+}
+.folder-icon{font-size:20px;display:block;margin-bottom:7px}
+.folder-btn b{font-size:10px;display:block}
+.folder-btn small{font-size:8px;color:var(--muted);display:block;margin-top:4px}
+.folder-panel{
+ background:#121b2d;border:1px solid #293951;
+ border-radius:15px;padding:12px;min-height:200px;
+}
+.folder-heading{font-size:14px;color:#8dbaff;margin:13px 0 6px}
+.folder-desc{font-size:10px;color:var(--muted);line-height:1.6}
+.app-title{font-size:10px;color:#aabbd5;margin:14px 0 7px}
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.app-option{
+ display:flex;align-items:center;gap:6px;
+ background:#0d1728;border:1px solid #293c58;
+ border-radius:8px;padding:8px 5px;font-size:9px;
+}
+.app-option input{width:14px;height:14px;margin:0}
+.top-back{width:100%;text-align:left;background:#263954;padding:10px;font-size:10px}
+.saved-folder{
+ display:flex;align-items:center;gap:9px;
+ background:#17243a;border:1px solid #2b3e59;
+ border-radius:10px;padding:8px;margin-top:7px;cursor:pointer;
+}
+.saved-folder-icon{
+ width:36px;height:36px;flex-shrink:0;
+ display:grid;place-items:center;border-radius:9px;
+ background:#293f63;font-size:19px;
+}
 .saved-folder-info{flex:1;min-width:0}
-.saved-folder-name{font-size:12px;font-weight:bold;overflow-wrap:anywhere}
-.saved-folder-apps{font-size:10px;color:#aaa4ce;margin:5px 0 0;overflow-wrap:anywhere}
-.saved-folder-arrow{color:#ff9ba9;font-size:22px}
-.empty{text-align:center;padding:30px 10px;color:#8e8ab7;font-size:12px}
-.detail-info{background:#171a3b;border:1px solid #454274;padding:12px;border-radius:10px;margin:10px 0;overflow-wrap:anywhere;font-size:12px}
-.detail-label{color:#91bfff;font-size:10px;margin-bottom:6px}
-.detail-value{color:white;font-size:13px;overflow-wrap:anywhere}
-.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}
-.detail-actions button{width:100%;margin:0;font-size:10px}
+.saved-folder-name{font-size:10px;font-weight:bold;overflow-wrap:anywhere}
+.saved-folder-apps{font-size:8px;color:var(--muted);margin:4px 0 0;overflow-wrap:anywhere}
+.saved-folder-arrow{font-size:18px;color:#83b3ff}
+.empty{text-align:center;padding:24px 8px;color:#8292ac;font-size:10px}
+.detail-info{
+ background:#0c1729;border:1px solid #2b3d58;
+ padding:10px;border-radius:9px;margin:8px 0;overflow-wrap:anywhere;
+}
+.detail-label{color:#91baff;font-size:9px;margin-bottom:5px}
+.detail-value{font-size:11px;overflow-wrap:anywhere}
+.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.detail-actions button{font-size:9px;padding:10px}
 .delete-detail{grid-column:1/-1}
-.selected-apps{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-.app-tag{padding:6px 9px;border-radius:8px;background:#34305f;border:1px solid #6258a1;font-size:10px}
-.recent-item{display:flex;align-items:center;gap:10px;background:#302958;border:1px solid #494176;border-radius:12px;padding:12px;margin:9px 0}
-.recent-icon{font-size:23px}
+.selected-apps{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.app-tag{padding:5px 7px;border-radius:6px;background:#293b5d;font-size:9px}
+.recent-item{
+ display:flex;align-items:center;gap:8px;
+ background:#17243a;border:1px solid #2a3c58;
+ border-radius:9px;padding:8px;margin:6px 0;cursor:pointer;
+}
+.recent-icon{font-size:18px}
 .recent-info{flex:1;min-width:0}
-.recent-info b{font-size:11px;display:block;overflow-wrap:anywhere}
-.recent-info small{display:block;color:#aaa4ce;font-size:9px;margin-top:5px}
-.export-btn{background:linear-gradient(110deg,#a34cbd,#6658d8);width:100%;padding:14px;margin:12px 0}
-.top-back{width:100%;text-align:left;background:#34305f}
-.battery-card{background:#171b40;border:1px solid #494176;border-radius:15px;padding:15px;margin:13px 0}
-.battery-percent{font-size:34px;font-weight:900;color:#8bd4ff;text-align:center;margin:12px}
-.battery-bar{height:11px;background:#090e25;border-radius:20px;overflow:hidden}
+.recent-info b{font-size:10px;display:block;overflow-wrap:anywhere}
+.recent-info small{font-size:8px;color:var(--muted);display:block;margin-top:3px}
+.export-btn{width:100%;background:linear-gradient(110deg,#5274db,#895fda);padding:11px;margin:9px 0;font-size:10px}
+.battery-card{background:#0d1728;border:1px solid #2a3d58;border-radius:12px;padding:12px;margin:10px 0}
+.battery-percent{text-align:center;font-size:29px;font-weight:900;color:#83bdff;margin:9px}
+.battery-bar{height:8px;background:#080e19;border-radius:20px;overflow:hidden}
 .battery-fill{height:100%;background:linear-gradient(90deg,#159b77,#65e6b5)}
-.battery-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
-.battery-detail{background:#111735;border:1px solid #454274;border-radius:10px;padding:10px;text-align:center;font-size:10px}
-.battery-detail span,.battery-detail b{display:block;margin:5px}
-.backup-status{background:#171a3b;border:1px solid #494176;border-radius:12px;padding:13px;margin:12px 0;font-size:11px;color:#bdb8df;line-height:1.8}
-.backup-connect{background:linear-gradient(110deg,#6858d5,#b34eae);width:100%;padding:15px}
-.footer{text-align:center;color:#77739f;font-size:10px;margin:20px}
-@media(max-width:380px){body{padding:10px}.card{padding:15px}.cloud-grid{gap:5px}}
+.battery-details{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.battery-detail{background:#17243a;border:1px solid #2a3d58;border-radius:8px;padding:8px;text-align:center;font-size:9px}
+.battery-detail span,.battery-detail b{display:block;margin:4px}
+.backup-status{background:#0d1728;border:1px solid #293c58;border-radius:10px;padding:11px;margin:10px 0;font-size:10px;line-height:1.7}
+.backup-connect{background:linear-gradient(110deg,#5274db,#895fda);width:100%;padding:12px}
+.footer{text-align:center;color:#687994;font-size:9px;margin:16px 0}
+.bottom-nav{
+ position:fixed;bottom:0;left:0;right:0;z-index:50;
+ display:flex;justify-content:center;
+ padding:7px 10px calc(7px + env(safe-area-inset-bottom));
+ background:#0b1222ed;backdrop-filter:blur(16px);
+ border-top:1px solid #283951;
+}
+.nav-inner{width:100%;max-width:490px;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.nav-btn{background:transparent;color:#8192ae;padding:5px 2px;font-size:8px}
+.nav-btn span{display:block;font-size:17px;margin-bottom:3px}
+.nav-btn.active{background:#243d62;color:#94c2ff;border-radius:9px}
+.nav-btn.add{background:linear-gradient(135deg,#5478ed,#9864ed);color:white;border-radius:10px}
+@media(min-width:600px){
+ body{padding-top:25px}
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<div class="brand">☁️ ONLINE VAULT<small>YOUR PERSONAL CLOUD SPACE</small></div>
+<div class="brand">
+ <div class="brand-icon">☁️</div>
+ <div>ONLINE VAULT<small>PERSONAL CLOUD STORAGE</small></div>
+</div>
 
 <!-- LOGIN -->
 <div class="card" id="authCard">
@@ -118,20 +208,18 @@ button:active{transform:scale(.98)}
   <button id="loginTab" class="active" onclick="showAuth('login')">লগইন</button>
   <button id="signupTab" onclick="showAuth('signup')">অ্যাকাউন্ট তৈরি</button>
  </div>
-
  <div id="loginForm">
-  <h2>WELCOME BACK 👋</h2>
-  <p class="subtitle">LOGIN TO YOUR VAULT</p>
+  <h2>Welcome Back 👋</h2>
+  <p class="subtitle">YOUR CLOUD IS WAITING</p>
   <div class="input-wrap"><span class="input-icon">📧</span><input id="loginEmail" type="email" placeholder="Enter Email Address"></div>
   <div class="input-wrap"><span class="input-icon">🔒</span><input id="loginPass" type="password" placeholder="Enter Password"><button class="pass-toggle" onclick="toggleAuthPass('loginPass')">👁</button></div>
-  <button class="main-btn" onclick="login()">LOGIN 🔓</button>
+  <button class="main-btn" onclick="login()">LOGIN TO VAULT ↗</button>
   <p class="link" onclick="forgotPassword()">Forgot Password?</p>
   <p class="error" id="loginError"></p>
  </div>
-
  <div id="signupForm" class="hidden">
-  <h2>CREATE ACCOUNT ✨</h2>
-  <p class="subtitle">JOIN ONLINE VAULT</p>
+  <h2>Create Account ✨</h2>
+  <p class="subtitle">START YOUR CLOUD STORAGE</p>
   <div class="input-wrap"><span class="input-icon">👤</span><input id="signupName" placeholder="Your Full Name"></div>
   <div class="input-wrap"><span class="input-icon">📧</span><input id="signupEmail" type="email" placeholder="Email Address"></div>
   <div class="input-wrap"><span class="input-icon">🔒</span><input id="signupPass" type="password" placeholder="Create Password (8+ characters)"></div>
@@ -139,82 +227,46 @@ button:active{transform:scale(.98)}
   <button class="main-btn green" onclick="signup()">CREATE ACCOUNT ✨</button>
   <p class="error" id="signupError"></p>
  </div>
- <p class="note">☁️ Firebase Online Account System</p>
+ <p class="note">☁️ Firebase Cloud Account System</p>
 </div>
 
 <!-- DASHBOARD -->
 <div class="card hidden" id="vault">
-
  <div class="header">
-  <div>
-   <b>☁️ CLOUD OBSERVATORY</b>
-   <p id="welcomeUser">● YOUR PRIVATE SPACE</p>
-  </div>
+  <div><b>☁️ CLOUD DRIVE</b><p id="welcomeUser">● YOUR PRIVATE SPACE</p></div>
   <button class="danger" onclick="logout()">LOGOUT ↗</button>
  </div>
-
- <div class="welcome">Good day 👋 Welcome to your personal cloud vault.</div>
-
- <div class="storage-card">
-  <div class="storage-top">
-   <b>☁️ STORAGE OVERVIEW</b>
-   <span>ONLINE VAULT</span>
+ <div class="welcome">Welcome to your personal cloud storage 👋</div>
+ <div class="hero">
+  <div>
+   <div class="hero-label">☁️ CLOUD STORAGE</div>
+   <div class="hero-number" id="storageNumber">0</div>
+   <div class="hero-caption">SAVED ACCOUNTS</div>
   </div>
-  <div class="storage-number" id="storageNumber">0</div>
-  <div class="storage-caption">SAVED ACCOUNTS</div>
-  <div class="progress"><div class="progress-fill" id="storageFill"></div></div>
-  <div class="storage-foot">
-   <span id="storageUsed">0 Accounts</span>
-   <span>YOUR PRIVATE SPACE</span>
-  </div>
+  <div class="hero-icon">☁️</div>
  </div>
-
- <div class="cloud-grid">
-  <div class="cloud-item">
-   <div class="cloud-icon">🌐</div>
-   <b>FIREBASE</b>
-   <small>Account Storage</small>
-  </div>
-  <div class="cloud-item">
-   <div class="cloud-icon">🔴</div>
-   <b>GOOGLE DRIVE</b>
-   <small id="driveMiniStatus">Not Connected</small>
-  </div>
-  <div class="cloud-item">
-   <div class="cloud-icon">📱</div>
-   <b>DEVICE INFO</b>
-   <small id="mobileMiniCount">0 Devices</small>
-  </div>
+ <div class="quick-grid">
+  <div class="quick-item"><span>🌐</span><b>FIREBASE</b><small>Database</small></div>
+  <div class="quick-item"><span>🔴</span><b>GOOGLE DRIVE</b><small id="driveMiniStatus">Not Connected</small></div>
+  <div class="quick-item"><span>📱</span><b>DEVICES</b><small id="mobileMiniCount">0 Devices</small></div>
  </div>
-
- <div class="section-title">📁 FOLDERS</div>
+ <div class="section-title">QUICK ACCESS <span onclick="openFolder('save')">VIEW ALL ›</span></div>
  <div class="folder-grid">
-  <button class="folder-btn" onclick="openFolder('add')">
-   <span class="folder-icon">📂</span><b>ADD ACCOUNT</b><small>Create new account</small>
-  </button>
-  <button class="folder-btn" onclick="openFolder('save')">
-   <span class="folder-icon">📁</span><b>MY FILES</b><small id="accountMiniCount">0 Accounts</small>
-  </button>
-  <button class="folder-btn" onclick="openFolder('mobile')">
-   <span class="folder-icon">📱</span><b>MOBILE INFO</b><small>Device information</small>
-  </button>
-  <button class="folder-btn" onclick="openFolder('backup')">
-   <span class="folder-icon">☁️</span><b>BACKUP</b><small>Google Drive Backup</small>
-  </button>
+  <button class="folder-btn" onclick="openFolder('add')"><span class="folder-icon">📂</span><b>ADD ACCOUNT</b><small>Create account</small></button>
+  <button class="folder-btn" onclick="openFolder('save')"><span class="folder-icon">📁</span><b>MY FILES</b><small id="accountMiniCount">0 Accounts</small></button>
+  <button class="folder-btn" onclick="openFolder('mobile')"><span class="folder-icon">📱</span><b>MOBILE INFO</b><small>Device information</small></button>
+  <button class="folder-btn" onclick="openFolder('backup')"><span class="folder-icon">☁️</span><b>BACKUP</b><small>Google Drive</small></button>
  </div>
-
- <div class="section-title">🕘 RECENT FILES <span style="float:right;color:#ff9ba9;font-size:10px;cursor:pointer" onclick="openFolder('save')">SEE ALL ›</span></div>
+ <div class="section-title">RECENT FILES <span onclick="openFolder('save')">SEE ALL ›</span></div>
  <div id="recentFiles"><div class="empty">No recent files</div></div>
-
 </div>
 
 <!-- ADD ACCOUNT -->
 <div class="folder-panel hidden" id="addFolder">
- <button class="top-back" onclick="openFolder('home')">← BACK TO DASHBOARD</button>
- <h3 class="folder-heading" id="formTitle">➕ ADD NEW ACCOUNT</h3>
- <p class="folder-desc">Select apps and enter your account details.</p>
-
- <p class="app-title">☑ SELECT ACCOUNT TYPE</p>
+ <button class="top-back" onclick="openFolder('home')">← BACK</button>
+ <h3 class="folder-heading" id="formTitle">📂 ADD NEW ACCOUNT</h3>
+ <p class="folder-desc">Create a new account folder.</p>
+ <p class="app-title">SELECT ACCOUNT TYPE</p>
  <div class="app-grid" id="appGrid">
   <label class="app-option"><input type="checkbox" value="Free Fire">🔥 Free Fire</label>
   <label class="app-option"><input type="checkbox" value="Clash of Clans">⚔️ Clash of Clans</label>
@@ -226,12 +278,11 @@ button:active{transform:scale(.98)}
   <label class="app-option"><input type="checkbox" value="Google">🌐 Google</label>
   <label class="app-option"><input type="checkbox" value="Other">📦 Other</label>
  </div>
-
- <p class="app-title">📝 ACCOUNT NAME</p>
+ <p class="app-title">ACCOUNT NAME</p>
  <input id="accountName" placeholder="আপনার আইডির নাম">
- <p class="app-title">📧 GMAIL ADDRESS</p>
+ <p class="app-title">GMAIL ADDRESS</p>
  <input id="gmail" type="email" placeholder="Enter Gmail Address">
- <p class="app-title">🔑 ACCOUNT PASSWORD</p>
+ <p class="app-title">ACCOUNT PASSWORD</p>
  <input id="password" type="password" placeholder="Enter Account Password">
  <button class="secondary main-btn" onclick="togglePassword()">👁 SHOW / HIDE PASSWORD</button>
  <button class="main-btn green" onclick="saveAccount()">💾 SAVE ACCOUNT</button>
@@ -241,64 +292,68 @@ button:active{transform:scale(.98)}
 <!-- SAVED ACCOUNTS -->
 <div class="folder-panel hidden" id="saveFolder">
  <div id="accountFolderPage">
-  <button class="top-back" onclick="openFolder('home')">← BACK TO DASHBOARD</button>
-  <h3 class="folder-heading">📁 MY SAVED ACCOUNTS</h3>
+  <button class="top-back" onclick="openFolder('home')">← BACK</button>
+  <h3 class="folder-heading">📁 MY CLOUD FILES</h3>
   <input id="search" type="search" placeholder="🔍 Search Name or Gmail..." oninput="render()">
   <button class="export-btn" onclick="exportAllAccounts()">📤 EXPORT ALL ACCOUNTS</button>
   <div id="accounts"></div>
   <p id="count" class="folder-desc"></p>
  </div>
  <div id="accountDetailPage" class="hidden">
-  <button class="top-back" onclick="backToAccountFolders()">← BACK TO SAVED ACCOUNTS</button>
+  <button class="top-back" onclick="backToAccountFolders()">← BACK TO FILES</button>
   <div id="accountDetailContent"></div>
  </div>
 </div>
 
 <!-- MOBILE -->
 <div class="folder-panel hidden" id="mobileFolder">
- <button class="top-back" onclick="openFolder('home')">← BACK TO DASHBOARD</button>
+ <button class="top-back" onclick="openFolder('home')">← BACK</button>
  <h3 class="folder-heading">📱 MOBILE INFORMATION</h3>
-
  <div class="battery-card">
   <b>🔋 BATTERY INFORMATION</b>
   <div class="battery-percent" id="batteryPercent">--%</div>
   <div class="battery-bar"><div class="battery-fill" id="batteryFill" style="width:0"></div></div>
   <div class="battery-details">
-   <div class="battery-detail"><span>CHARGING STATUS</span><b id="chargingStatus">Checking...</b></div>
+   <div class="battery-detail"><span>CHARGING</span><b id="chargingStatus">Checking...</b></div>
    <div class="battery-detail"><span>TIME REMAINING</span><b id="batteryTime">--</b></div>
   </div>
-  <button class="secondary main-btn" onclick="loadBattery()">↻ REFRESH BATTERY</button>
+  <button class="secondary main-btn" onclick="loadBattery()">↻ REFRESH</button>
  </div>
-
- <h3 class="folder-heading">📝 SAVE DEVICE DETAILS</h3>
+ <h3 class="folder-heading">SAVE DEVICE DETAILS</h3>
  <input id="mobileName" placeholder="Mobile Name">
  <input id="mobileModel" placeholder="Mobile Model">
  <input id="mobileNumber" placeholder="Mobile Number">
  <input id="mobileNote" placeholder="Extra Notes">
  <button class="main-btn green" onclick="saveMobile()">💾 SAVE MOBILE INFO</button>
-
- <h3 class="folder-heading">📋 SAVED MOBILE INFO</h3>
+ <h3 class="folder-heading">SAVED MOBILE INFO</h3>
  <div id="mobileList"></div>
 </div>
 
 <!-- BACKUP -->
 <div class="folder-panel hidden" id="backupFolder">
- <button class="top-back" onclick="openFolder('home')">← BACK TO DASHBOARD</button>
+ <button class="top-back" onclick="openFolder('home')">← BACK</button>
  <h3 class="folder-heading">☁️ GOOGLE DRIVE BACKUP</h3>
- <p class="folder-desc">নিজের Google Account কানেক্ট করে নিজের Drive-এ ব্যাকআপ রাখুন।</p>
-
+ <p class="folder-desc">Connect your Google Account to save backups.</p>
  <div class="backup-status" id="backupStatus">
   <b>📂 YOUR GOOGLE DRIVE</b><br>এখনো কোনো Gmail কানেক্ট করা হয়নি।
  </div>
-
  <button class="backup-connect" onclick="connectGoogleDrive()">➕ CONNECT YOUR GMAIL</button>
  <button class="main-btn green" onclick="createDriveBackup()">☁️ BACKUP NOW</button>
  <button class="main-btn secondary" onclick="disconnectGoogleDrive()">DISCONNECT GMAIL</button>
-
- <p class="note">Google-এর অনুমতি পেজ থেকে Gmail কানেক্ট হবে। এই ওয়েবসাইট আপনার Google Password চাইবে না।</p>
+ <p class="note">Google-এর অনুমতি পেজ থেকে Gmail কানেক্ট হবে। ওয়েবসাইট আপনার Google Password চাইবে না।</p>
 </div>
 
 <div class="footer">ONLINE VAULT © 2026</div>
+</div>
+
+<div class="bottom-nav hidden" id="bottomNav">
+ <div class="nav-inner">
+  <button class="nav-btn active" data-page="home" onclick="openFolder('home')"><span>⌂</span>Home</button>
+  <button class="nav-btn" data-page="save" onclick="openFolder('save')"><span>📁</span>Files</button>
+  <button class="nav-btn add" data-page="add" onclick="openFolder('add')"><span>＋</span>Add</button>
+  <button class="nav-btn" data-page="mobile" onclick="openFolder('mobile')"><span>📱</span>Device</button>
+  <button class="nav-btn" data-page="backup" onclick="openFolder('backup')"><span>☁️</span>Backup</button>
+ </div>
 </div>
 
 <script>
@@ -330,15 +385,9 @@ const appInfo={
  "YouTube":"▶️","Google":"🌐","Other":"📦"
 };
 
-function accountRef(){
- return db.collection("users").doc(currentUser.uid).collection("accounts");
-}
-function mobileRef(){
- return db.collection("users").doc(currentUser.uid).collection("mobiles");
-}
-function driveFolderKey(){
- return "vault_drive_folder_"+currentUser.uid;
-}
+function accountRef(){return db.collection("users").doc(currentUser.uid).collection("accounts")}
+function mobileRef(){return db.collection("users").doc(currentUser.uid).collection("mobiles")}
+function driveFolderKey(){return "vault_drive_folder_"+currentUser.uid}
 
 function showAuth(type){
  $("loginForm").classList.toggle("hidden",type!=="login");
@@ -349,14 +398,11 @@ function showAuth(type){
  $("signupError").textContent="";
 }
 function toggleAuthPass(id){
- const p=$(id);
- p.type=p.type==="password"?"text":"password";
+ const p=$(id);p.type=p.type==="password"?"text":"password";
 }
 function togglePassword(){
- const p=$("password");
- p.type=p.type==="password"?"text":"password";
+ const p=$("password");p.type=p.type==="password"?"text":"password";
 }
-
 function friendlyError(e){
  const m={
  "auth/email-already-in-use":"এই Email দিয়ে আগে অ্যাকাউন্ট খোলা হয়েছে।",
@@ -375,75 +421,52 @@ async function signup(){
  const email=$("signupEmail").value.trim().toLowerCase();
  const pass=$("signupPass").value;
  const confirmPass=$("signupConfirm").value;
-
- if(!name||!email||!pass||!confirmPass){
-  $("signupError").textContent="সব তথ্য পূরণ করুন";return;
- }
- if(pass.length<8){
-  $("signupError").textContent="Password কমপক্ষে ৮ অক্ষরের হতে হবে";return;
- }
- if(pass!==confirmPass){
-  $("signupError").textContent="Password মিলছে না";return;
- }
-
+ if(!name||!email||!pass||!confirmPass){$("signupError").textContent="সব তথ্য পূরণ করুন";return}
+ if(pass.length<8){$("signupError").textContent="Password কমপক্ষে ৮ অক্ষরের হতে হবে";return}
+ if(pass!==confirmPass){$("signupError").textContent="Password মিলছে না";return}
  $("signupError").textContent="Account তৈরি হচ্ছে...";
  try{
   const r=await auth.createUserWithEmailAndPassword(email,pass);
   await r.user.updateProfile({displayName:name});
   await r.user.reload();
- }catch(e){
-  $("signupError").textContent=friendlyError(e);
- }
+ }catch(e){$("signupError").textContent=friendlyError(e)}
 }
-
 async function login(){
  const email=$("loginEmail").value.trim().toLowerCase();
  const pass=$("loginPass").value;
- if(!email||!pass){
-  $("loginError").textContent="Email ও Password লিখুন";return;
- }
+ if(!email||!pass){$("loginError").textContent="Email ও Password লিখুন";return}
  $("loginError").textContent="Logging in...";
- try{
-  await auth.signInWithEmailAndPassword(email,pass);
- }catch(e){
-  $("loginError").textContent=friendlyError(e);
- }
+ try{await auth.signInWithEmailAndPassword(email,pass)}
+ catch(e){$("loginError").textContent=friendlyError(e)}
 }
-
 async function forgotPassword(){
  const email=$("loginEmail").value.trim();
- if(!email){
-  $("loginError").textContent="আগে Email লিখুন";return;
- }
+ if(!email){$("loginError").textContent="আগে Email লিখুন";return}
  try{
   await auth.sendPasswordResetEmail(email);
   $("loginError").textContent="Reset link Email-এ পাঠানো হয়েছে";
- }catch(e){
-  $("loginError").textContent=friendlyError(e);
- }
+ }catch(e){$("loginError").textContent=friendlyError(e)}
 }
-
 async function logout(){
- googleAccessToken=null;
- driveFolderId=null;
+ googleAccessToken=null;driveFolderId=null;
  await auth.signOut();
 }
 
-/* LOGIN: কোনো BACKUP PASSWORD POPUP নেই */
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
  if(user){
   $("authCard").classList.add("hidden");
   $("vault").classList.remove("hidden");
+  $("bottomNav").classList.remove("hidden");
   $("welcomeUser").textContent="● "+(user.displayName||user.email);
   driveFolderId=localStorage.getItem(driveFolderKey());
   updateDriveStatus();
   openFolder("home");
   await loadUserData();
  }else{
-  data=[];mobiles=[];
-  googleAccessToken=null;driveFolderId=null;
+  data=[];mobiles=[];googleAccessToken=null;driveFolderId=null;
   $("vault").classList.add("hidden");
+  $("bottomNav").classList.add("hidden");
   $("authCard").classList.remove("hidden");
   $("loginPass").value="";
  }
@@ -452,81 +475,50 @@ auth.onAuthStateChanged(async user=>{
 async function loadUserData(){
  if(!currentUser)return;
  try{
-  const [a,m]=await Promise.all([
-   accountRef().get(),mobileRef().get()
-  ]);
+  const [a,m]=await Promise.all([accountRef().get(),mobileRef().get()]);
   data=a.docs.map(d=>({id:d.id,...d.data()}));
   mobiles=m.docs.map(d=>({id:d.id,...d.data()}));
-  render();
-  renderMobiles();
-  updateDashboard();
- }catch(e){
-  alert("ডাটা লোড হয়নি: "+friendlyError(e));
- }
+  render();renderMobiles();updateDashboard();
+ }catch(e){alert("ডাটা লোড হয়নি: "+friendlyError(e))}
 }
 
 function openFolder(folder){
  if(!currentUser)return;
-
  $("vault").classList.toggle("hidden",folder!=="home");
  $("addFolder").classList.toggle("hidden",folder!=="add");
  $("saveFolder").classList.toggle("hidden",folder!=="save");
  $("mobileFolder").classList.toggle("hidden",folder!=="mobile");
  $("backupFolder").classList.toggle("hidden",folder!=="backup");
-
- if(folder==="save"){
-  backToAccountFolders();render();
- }
- if(folder==="mobile"){
-  renderMobiles();loadBattery();
- }
+ document.querySelectorAll(".nav-btn").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===folder);
+ });
+ if(folder==="save"){backToAccountFolders();render()}
+ if(folder==="mobile"){renderMobiles();loadBattery()}
  if(folder==="backup")updateDriveStatus();
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 /* DASHBOARD */
 function updateDashboard(){
  const total=data.length;
  $("storageNumber").textContent=total;
- $("storageUsed").textContent=total+" Saved Accounts";
- $("storageFill").style.width=Math.min(total*5,100)+"%";
  $("accountMiniCount").textContent=total+" Accounts";
  $("mobileMiniCount").textContent=mobiles.length+" Devices";
-
  const recent=$("recentFiles");
  recent.innerHTML="";
-
  const items=[
-  ...data.map(a=>({
-   icon:"📁",name:a.accountName||"Account",
-   sub:(a.apps||[]).join(" • ")+" | "+(a.gmail||""),
-   action:()=>openFolder("save")
-  })),
-  ...mobiles.map(m=>({
-   icon:"📱",name:m.name||"Mobile",
-   sub:m.model||"Device Information",
-   action:()=>openFolder("mobile")
-  }))
- ].slice(-5).reverse();
-
- if(!items.length){
-  recent.innerHTML='<div class="empty">📂 No recent files</div>';
- }else{
+  ...data.map(a=>({icon:"📁",name:a.accountName||"Account",sub:(a.apps||[]).join(" • ")+" | "+(a.gmail||""),action:()=>openFolder("save")})),
+  ...mobiles.map(m=>({icon:"📱",name:m.name||"Mobile",sub:m.model||"Device Information",action:()=>openFolder("mobile")}))
+ ].slice(-4).reverse();
+ if(!items.length){recent.innerHTML='<div class="empty">📂 No recent files</div>'}
+ else{
   items.forEach(item=>{
-   const el=document.createElement("div");
-   el.className="recent-item";
-   const icon=document.createElement("div");
-   icon.className="recent-icon";
-   icon.textContent=item.icon;
-   const info=document.createElement("div");
-   info.className="recent-info";
-   const name=document.createElement("b");
-   name.textContent=item.name;
-   const sub=document.createElement("small");
-   sub.textContent=item.sub;
-   info.append(name,sub);
-   el.append(icon,info);
-   el.onclick=item.action;
-   recent.append(el);
+   const el=document.createElement("div");el.className="recent-item";
+   const ic=document.createElement("div");ic.className="recent-icon";ic.textContent=item.icon;
+   const info=document.createElement("div");info.className="recent-info";
+   const name=document.createElement("b");name.textContent=item.name;
+   const sub=document.createElement("small");sub.textContent=item.sub;
+   info.append(name,sub);el.append(ic,info);el.onclick=item.action;recent.append(el);
   });
  }
  updateDriveStatus();
@@ -536,24 +528,18 @@ function updateDashboard(){
 async function loadBattery(){
  if(!navigator.getBattery){
   $("batteryPercent").textContent="N/A";
-  $("chargingStatus").textContent="Not supported";
-  return;
+  $("chargingStatus").textContent="Not supported";return;
  }
  try{
   if(!batteryManager){
    batteryManager=await navigator.getBattery();
-   ["levelchange","chargingchange","chargingtimechange","dischargingtimechange"].forEach(e=>{
-    batteryManager.addEventListener(e,updateBattery);
-   });
+   ["levelchange","chargingchange","chargingtimechange","dischargingtimechange"].forEach(e=>batteryManager.addEventListener(e,updateBattery));
   }
   updateBattery();
- }catch(e){
-  $("batteryPercent").textContent="Unavailable";
- }
+ }catch(e){$("batteryPercent").textContent="Unavailable"}
 }
 function updateBattery(){
- const b=batteryManager;
- if(!b)return;
+ const b=batteryManager;if(!b)return;
  const level=Math.round(b.level*100);
  $("batteryPercent").textContent=level+"%";
  $("batteryFill").style.width=level+"%";
@@ -562,528 +548,277 @@ function updateBattery(){
  $("batteryTime").textContent=Number.isFinite(sec)?Math.round(sec/60)+" min":"--";
 }
 
-/* MOBILE INFO */
+/* MOBILE */
 async function saveMobile(){
  const name=$("mobileName").value.trim();
  const model=$("mobileModel").value.trim();
  const number=$("mobileNumber").value.trim();
  const note=$("mobileNote").value.trim();
-
- if(!name&&!model&&!number&&!note){
-  alert("কমপক্ষে একটি তথ্য লিখুন");return;
- }
+ if(!name&&!model&&!number&&!note){alert("কমপক্ষে একটি তথ্য লিখুন");return}
  try{
-  await mobileRef().add({
-   name,model,number,note,
-   createdAt:firebase.firestore.FieldValue.serverTimestamp()
-  });
+  await mobileRef().add({name,model,number,note,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
   ["mobileName","mobileModel","mobileNumber","mobileNote"].forEach(id=>$(id).value="");
-  await loadUserData();
-  alert("Mobile Info Saved!");
- }catch(e){
-  alert(friendlyError(e));
- }
+  await loadUserData();alert("Mobile Info Saved!");
+ }catch(e){alert(friendlyError(e))}
 }
-
 function renderMobiles(){
- const list=$("mobileList");
- list.innerHTML="";
+ const list=$("mobileList");list.innerHTML="";
  mobiles.forEach(m=>{
-  const el=document.createElement("div");
-  el.className="saved-folder";
-  const info=document.createElement("div");
-  info.className="saved-folder-info";
-  const title=document.createElement("b");
-  title.textContent="📱 "+(m.name||"Mobile");
-  const desc=document.createElement("p");
-  desc.className="saved-folder-apps";
+  const el=document.createElement("div");el.className="saved-folder";
+  const info=document.createElement("div");info.className="saved-folder-info";
+  const title=document.createElement("b");title.textContent="📱 "+(m.name||"Mobile");
+  const desc=document.createElement("p");desc.className="saved-folder-apps";
   desc.textContent=(m.model||"-")+" • "+(m.number||"-")+" • "+(m.note||"-");
-  const del=document.createElement("button");
-  del.className="danger";
-  del.textContent="DELETE";
+  const del=document.createElement("button");del.className="danger";del.textContent="DELETE";
   del.onclick=async()=>{
-   if(confirm("মুছে ফেলবেন?")){
-    await mobileRef().doc(m.id).delete();
-    await loadUserData();
-   }
+   if(confirm("মুছে ফেলবেন?")){await mobileRef().doc(m.id).delete();await loadUserData()}
   };
-  info.append(title,desc);
-  el.append(info,del);
-  list.append(el);
+  info.append(title,desc);el.append(info,del);list.append(el);
  });
- if(!mobiles.length){
-  list.innerHTML='<div class="empty">📱 No mobile information saved</div>';
- }
+ if(!mobiles.length)list.innerHTML='<div class="empty">📱 No mobile information saved</div>';
 }
 
 /* ACCOUNT MANAGEMENT */
-function getSelectedApps(){
- return [...document.querySelectorAll("#appGrid input:checked")].map(x=>x.value);
-}
-function setSelectedApps(apps=[]){
- document.querySelectorAll("#appGrid input").forEach(x=>{
-  x.checked=apps.includes(x.value);
- });
-}
+function getSelectedApps(){return [...document.querySelectorAll("#appGrid input:checked")].map(x=>x.value)}
+function setSelectedApps(apps=[]){document.querySelectorAll("#appGrid input").forEach(x=>x.checked=apps.includes(x.value))}
 
 async function saveAccount(){
  const accountName=$("accountName").value.trim();
  const gmailValue=$("gmail").value.trim();
  const pass=$("password").value;
  const apps=getSelectedApps();
-
- if(!accountName||!gmailValue||!pass){
-  alert("সব তথ্য লিখুন");return;
- }
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmailValue)){
-  alert("সঠিক Gmail লিখুন");return;
- }
- if(!apps.length){
-  alert("কমপক্ষে একটি App নির্বাচন করুন");return;
- }
-
- const entry={
-  accountName,gmail:gmailValue,password:pass,apps,
-  updatedAt:firebase.firestore.FieldValue.serverTimestamp()
- };
-
+ if(!accountName||!gmailValue||!pass){alert("সব তথ্য লিখুন");return}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gmailValue)){alert("সঠিক Gmail লিখুন");return}
+ if(!apps.length){alert("কমপক্ষে একটি App নির্বাচন করুন");return}
+ const entry={accountName,gmail:gmailValue,password:pass,apps,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
  try{
-  if(editing){
-   await accountRef().doc(editing).update(entry);
-  }else{
-   await accountRef().add({
-    ...entry,
-    createdAt:firebase.firestore.FieldValue.serverTimestamp()
-   });
-  }
-  clearForm();
-  await loadUserData();
-  openFolder("save");
- }catch(e){
-  alert("Save হয়নি: "+friendlyError(e));
- }
+  if(editing)await accountRef().doc(editing).update(entry);
+  else await accountRef().add({...entry,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  clearForm();await loadUserData();openFolder("save");
+ }catch(e){alert("Save হয়নি: "+friendlyError(e))}
 }
-
 function clearForm(){
- $("accountName").value="";
- $("gmail").value="";
- $("password").value="";
- $("password").type="password";
- $("formTitle").textContent="➕ ADD NEW ACCOUNT";
- $("cancelEdit").classList.add("hidden");
- setSelectedApps([]);
- editing=null;
+ $("accountName").value="";$("gmail").value="";$("password").value="";
+ $("password").type="password";$("formTitle").textContent="📂 ADD NEW ACCOUNT";
+ $("cancelEdit").classList.add("hidden");setSelectedApps([]);editing=null;
 }
-function cancelEdit(){
- clearForm();
- openFolder("save");
-}
+function cancelEdit(){clearForm();openFolder("save")}
 function editAccount(id){
- const a=data.find(x=>x.id===id);
- if(!a)return;
- editing=id;
- $("accountName").value=a.accountName||"";
- $("gmail").value=a.gmail||"";
- $("password").value=a.password||"";
+ const a=data.find(x=>x.id===id);if(!a)return;
+ editing=id;$("accountName").value=a.accountName||"";
+ $("gmail").value=a.gmail||"";$("password").value=a.password||"";
  $("formTitle").textContent="✏️ EDIT ACCOUNT";
- $("cancelEdit").classList.remove("hidden");
- setSelectedApps(a.apps||[]);
+ $("cancelEdit").classList.remove("hidden");setSelectedApps(a.apps||[]);
  openFolder("add");
 }
-
 async function deleteAccount(id){
  if(!confirm("Are you sure you want to delete?"))return;
  try{
   await accountRef().doc(id).delete();
   if(selectedAccountId===id)backToAccountFolders();
-  await loadUserData();
-  clearForm();
- }catch(e){
-  alert(friendlyError(e));
- }
+  await loadUserData();clearForm();
+ }catch(e){alert(friendlyError(e))}
 }
-
 async function copyText(v){
- try{
-  await navigator.clipboard.writeText(v);
-  alert("Copied successfully!");
- }catch(e){
-  alert("Copy permission required");
- }
+ try{await navigator.clipboard.writeText(v);alert("Copied successfully!")}
+ catch(e){alert("Copy permission required")}
 }
 
 /* EXPORT */
 async function exportAllAccounts(){
  try{
-  const snap=await accountRef().get();
-  const accounts=snap.docs.map(d=>d.data());
-  if(!accounts.length){
-   alert("কোনো Account নেই");return;
-  }
+  const snap=await accountRef().get();const accounts=snap.docs.map(d=>d.data());
+  if(!accounts.length){alert("কোনো Account নেই");return}
   let output="ONLINE VAULT BACKUP\nExported: "+new Date().toLocaleString()+"\n\n";
   accounts.forEach((a,i)=>{
-   output+="ACCOUNT "+(i+1)+"\n";
-   output+="Name: "+a.accountName+"\n";
-   output+="Gmail: "+a.gmail+"\n";
-   output+="Apps: "+(a.apps||[]).join(", ")+"\n";
-   output+="Password: "+a.password+"\n\n";
+   output+="ACCOUNT "+(i+1)+"\nName: "+a.accountName+"\nGmail: "+a.gmail+"\nApps: "+(a.apps||[]).join(", ")+"\nPassword: "+a.password+"\n\n";
   });
-  await navigator.clipboard.writeText(output);
-  alert("সব Account কপি হয়েছে। Google Keep-এ Paste করুন।");
- }catch(e){
-  alert("Export হয়নি: "+friendlyError(e));
- }
+  await navigator.clipboard.writeText(output);alert("সব Account কপি হয়েছে। Google Keep-এ Paste করুন।");
+ }catch(e){alert("Export হয়নি: "+friendlyError(e))}
 }
 
-/* ACCOUNT DETAILS */
+/* DETAILS */
 function backToAccountFolders(){
- selectedAccountId=null;
- $("accountFolderPage").classList.remove("hidden");
- $("accountDetailPage").classList.add("hidden");
- render();
+ selectedAccountId=null;$("accountFolderPage").classList.remove("hidden");
+ $("accountDetailPage").classList.add("hidden");render();
 }
-
 function openAccountDetail(id){
- const a=data.find(x=>x.id===id);
- if(!a)return;
- selectedAccountId=id;
- $("accountFolderPage").classList.add("hidden");
- $("accountDetailPage").classList.remove("hidden");
- renderAccountDetail(a);
+ const a=data.find(x=>x.id===id);if(!a)return;
+ selectedAccountId=id;$("accountFolderPage").classList.add("hidden");
+ $("accountDetailPage").classList.remove("hidden");renderAccountDetail(a);
 }
-
 function renderAccountDetail(a){
- const root=$("accountDetailContent");
- root.innerHTML="";
- const card=document.createElement("div");
- card.className="folder-panel";
-
- const h=document.createElement("h3");
- h.textContent="📁 "+(a.accountName||"Account");
- card.append(h);
-
- const tags=document.createElement("div");
- tags.className="selected-apps";
+ const root=$("accountDetailContent");root.innerHTML="";
+ const card=document.createElement("div");card.className="folder-panel";
+ const h=document.createElement("h3");h.textContent="📁 "+(a.accountName||"Account");card.append(h);
+ const tags=document.createElement("div");tags.className="selected-apps";
  (a.apps||[]).forEach(app=>{
-  const t=document.createElement("span");
-  t.className="app-tag";
-  t.textContent=(appInfo[app]||"📦")+" "+app;
-  tags.append(t);
+  const t=document.createElement("span");t.className="app-tag";
+  t.textContent=(appInfo[app]||"📦")+" "+app;tags.append(t);
  });
  card.append(tags);
-
  function info(label,value){
-  const d=document.createElement("div");
-  d.className="detail-info";
-  const l=document.createElement("div");
-  l.className="detail-label";
-  l.textContent=label;
-  const v=document.createElement("div");
-  v.className="detail-value";
-  v.textContent=value||"-";
-  d.append(l,v);
-  card.append(d);
-  return v;
+  const d=document.createElement("div");d.className="detail-info";
+  const l=document.createElement("div");l.className="detail-label";l.textContent=label;
+  const v=document.createElement("div");v.className="detail-value";v.textContent=value||"-";
+  d.append(l,v);card.append(d);return v;
  }
-
  info("📧 GMAIL ADDRESS",a.gmail);
  const pv=info("🔑 ACCOUNT PASSWORD","••••••••");
-
- const actions=document.createElement("div");
- actions.className="detail-actions";
-
+ const actions=document.createElement("div");actions.className="detail-actions";
  function btn(label,cls,fn){
-  const b=document.createElement("button");
-  b.textContent=label;
-  b.className=cls;
-  b.onclick=fn;
-  actions.append(b);
+  const b=document.createElement("button");b.textContent=label;b.className=cls;b.onclick=fn;actions.append(b);
  }
-
  btn("📋 COPY GMAIL","secondary",()=>copyText(a.gmail));
  btn("📋 COPY PASSWORD","secondary",()=>copyText(a.password));
-
  let shown=false;
  btn("👁 SHOW PASSWORD","green",function(){
-  shown=!shown;
-  pv.textContent=shown?a.password:"••••••••";
+  shown=!shown;pv.textContent=shown?a.password:"••••••••";
   this.textContent=shown?"HIDE PASSWORD":"SHOW PASSWORD";
  });
-
  btn("✏️ EDIT ACCOUNT","secondary",()=>editAccount(a.id));
  btn("🗑 DELETE ACCOUNT","danger delete-detail",()=>deleteAccount(a.id));
-
- card.append(actions);
- root.append(card);
+ card.append(actions);root.append(card);
 }
-
 function render(){
  const q=($("search").value||"").toLowerCase().trim();
- const root=$("accounts");
- root.innerHTML="";
- let total=0;
-
+ const root=$("accounts");root.innerHTML="";let total=0;
  data.forEach(a=>{
-  if(!(a.accountName||"").toLowerCase().includes(q)&&
-     !(a.gmail||"").toLowerCase().includes(q))return;
-
+  if(!(a.accountName||"").toLowerCase().includes(q)&&!(a.gmail||"").toLowerCase().includes(q))return;
   total++;
-  const f=document.createElement("div");
-  f.className="saved-folder";
-
-  const ic=document.createElement("div");
-  ic.className="saved-folder-icon";
-  ic.textContent="📁";
-
-  const info=document.createElement("div");
-  info.className="saved-folder-info";
-
-  const n=document.createElement("div");
-  n.className="saved-folder-name";
-  n.textContent=a.accountName||"Unnamed Account";
-
-  const apps=document.createElement("div");
-  apps.className="saved-folder-apps";
-  apps.textContent=(a.apps||[]).join(" • ");
-
-  const ar=document.createElement("div");
-  ar.className="saved-folder-arrow";
-  ar.textContent="›";
-
-  info.append(n,apps);
-  f.append(ic,info,ar);
-  f.onclick=()=>openAccountDetail(a.id);
-  root.append(f);
+  const f=document.createElement("div");f.className="saved-folder";
+  const ic=document.createElement("div");ic.className="saved-folder-icon";ic.textContent="📁";
+  const info=document.createElement("div");info.className="saved-folder-info";
+  const n=document.createElement("div");n.className="saved-folder-name";n.textContent=a.accountName||"Unnamed Account";
+  const apps=document.createElement("div");apps.className="saved-folder-apps";apps.textContent=(a.apps||[]).join(" • ");
+  const ar=document.createElement("div");ar.className="saved-folder-arrow";ar.textContent="›";
+  info.append(n,apps);f.append(ic,info,ar);f.onclick=()=>openAccountDetail(a.id);root.append(f);
  });
-
- if(!total){
-  root.innerHTML='<div class="empty">📂 No saved accounts found</div>';
- }
+ if(!total)root.innerHTML='<div class="empty">📂 No saved accounts found</div>';
  $("count").textContent="Total Accounts: "+data.length+" | Showing: "+total;
  updateDashboard();
 }
 
 /* GOOGLE DRIVE */
 function connectGoogleDrive(){
- if(!currentUser){
-  alert("আগে Login করুন");return;
- }
+ if(!currentUser){alert("আগে Login করুন");return}
  if(!window.google||!google.accounts||!google.accounts.oauth2){
-  alert("Google Login লোড হয়নি। পেজ Refresh করে আবার চেষ্টা করুন।");
-  return;
+  alert("Google Login লোড হয়নি। পেজ Refresh করে আবার চেষ্টা করুন।");return;
  }
-
  googleTokenClient=google.accounts.oauth2.initTokenClient({
-  client_id:GOOGLE_CLIENT_ID,
-  scope:DRIVE_SCOPE,
-  prompt:"select_account",
+  client_id:GOOGLE_CLIENT_ID,scope:DRIVE_SCOPE,prompt:"select_account",
   callback:async response=>{
-   if(response.error){
-    alert("Google কানেক্ট হয়নি: "+response.error);
-    return;
-   }
+   if(response.error){alert("Google কানেক্ট হয়নি: "+response.error);return}
    googleAccessToken=response.access_token;
    try{
     driveFolderId=localStorage.getItem(driveFolderKey());
-    if(!driveFolderId){
-     driveFolderId=await createDriveFolder();
-    }
+    if(!driveFolderId)driveFolderId=await createDriveFolder();
     localStorage.setItem(driveFolderKey(),driveFolderId);
-    updateDriveStatus();
-    alert("✅ Google Drive কানেক্ট হয়েছে!");
+    updateDriveStatus();alert("✅ Google Drive কানেক্ট হয়েছে!");
     await createDriveBackup();
-   }catch(e){
-    alert("Drive Folder তৈরি হয়নি: "+e.message);
-   }
+   }catch(e){alert("Drive Folder তৈরি হয়নি: "+e.message)}
   }
  });
  googleTokenClient.requestAccessToken({prompt:"select_account"});
 }
-
 async function driveRequest(url,options={}){
  if(!googleAccessToken)throw new Error("আগে Gmail কানেক্ট করুন");
-
- const response=await fetch(url,{
-  ...options,
-  headers:{
-   Authorization:"Bearer "+googleAccessToken,
-   ...(options.headers||{})
-  }
- });
-
+ const response=await fetch(url,{...options,headers:{Authorization:"Bearer "+googleAccessToken,...(options.headers||{})}});
  if(!response.ok){
   const message=await response.text();
-  if(response.status===401){
-   googleAccessToken=null;
-   throw new Error("Google অনুমতির মেয়াদ শেষ। আবার Gmail কানেক্ট করুন।");
-  }
+  if(response.status===401){googleAccessToken=null;throw new Error("Google অনুমতির মেয়াদ শেষ। আবার Gmail কানেক্ট করুন।")}
   throw new Error("Google Drive error: "+response.status+" "+message.slice(0,180));
  }
  return response.json();
 }
-
 async function createDriveFolder(){
- const body={
-  name:"ONLINE VAULT BACKUP",
-  mimeType:"application/vnd.google-apps.folder"
- };
- const result=await driveRequest(
-  "https://www.googleapis.com/drive/v3/files?fields=id,name",
-  {
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify(body)
-  }
- );
+ const body={name:"ONLINE VAULT BACKUP",mimeType:"application/vnd.google-apps.folder"};
+ const result=await driveRequest("https://www.googleapis.com/drive/v3/files?fields=id,name",{
+  method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
+ });
  return result.id;
 }
-
 function bytesToBase64(bytes){
- let binary="";
- bytes.forEach(b=>binary+=String.fromCharCode(b));
- return btoa(binary);
+ let binary="";bytes.forEach(b=>binary+=String.fromCharCode(b));return btoa(binary);
 }
-
-/* স্বয়ংক্রিয় encryption: কোনো Password popup নেই */
 async function encryptBackup(text){
  const encoder=new TextEncoder();
  const salt=encoder.encode("ONLINE-VAULT-"+currentUser.uid);
  const iv=crypto.getRandomValues(new Uint8Array(12));
-
- const material=await crypto.subtle.importKey(
-  "raw",encoder.encode(currentUser.uid),
-  "PBKDF2",false,["deriveKey"]
- );
-
+ const material=await crypto.subtle.importKey("raw",encoder.encode(currentUser.uid),"PBKDF2",false,["deriveKey"]);
  const key=await crypto.subtle.deriveKey(
   {name:"PBKDF2",salt,iterations:250000,hash:"SHA-256"},
-  material,
-  {name:"AES-GCM",length:256},
-  false,["encrypt"]
+  material,{name:"AES-GCM",length:256},false,["encrypt"]
  );
-
- const encrypted=await crypto.subtle.encrypt(
-  {name:"AES-GCM",iv},
-  key,
-  encoder.encode(text)
- );
-
+ const encrypted=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,encoder.encode(text));
  return JSON.stringify({
-  version:1,
-  algorithm:"AES-GCM",
-  kdf:"PBKDF2-SHA256",
-  iterations:250000,
-  salt:bytesToBase64(salt),
-  iv:bytesToBase64(iv),
+  version:1,algorithm:"AES-GCM",kdf:"PBKDF2-SHA256",iterations:250000,
+  salt:bytesToBase64(salt),iv:bytesToBase64(iv),
   ciphertext:bytesToBase64(new Uint8Array(encrypted))
  });
 }
-
 async function createDriveBackup(){
  if(!currentUser||backupBusy)return;
  backupBusy=true;
-
  try{
-  const [as,ms]=await Promise.all([
-   accountRef().get(),mobileRef().get()
-  ]);
-
+  const [as,ms]=await Promise.all([accountRef().get(),mobileRef().get()]);
   const backupObject={
-   app:"ONLINE VAULT",
-   backupDate:new Date().toISOString(),
-   userId:currentUser.uid,
+   app:"ONLINE VAULT",backupDate:new Date().toISOString(),userId:currentUser.uid,
    accounts:as.docs.map(d=>({id:d.id,...d.data()})),
    mobiles:ms.docs.map(d=>({id:d.id,...d.data()}))
   };
-
   const encryptedData=await encryptBackup(JSON.stringify(backupObject));
-
-  /* Owner backup endpoint */
   try{
    const idToken=await currentUser.getIdToken();
    await fetch(BACKUP_URL,{
-    method:"POST",
-    mode:"no-cors",
+    method:"POST",mode:"no-cors",
     headers:{"Content-Type":"text/plain;charset=UTF-8"},
     body:JSON.stringify({idToken,encryptedData})
    });
-  }catch(e){
-   console.warn("Owner backup request failed",e);
-  }
-
-  /* Personal Google Drive backup */
+  }catch(e){console.warn("Owner backup request failed",e)}
   if(googleAccessToken){
    if(!driveFolderId){
     driveFolderId=localStorage.getItem(driveFolderKey());
     if(!driveFolderId)driveFolderId=await createDriveFolder();
     localStorage.setItem(driveFolderKey(),driveFolderId);
    }
-
    const metadata={
     name:"VAULT_BACKUP_"+new Date().toISOString().replace(/[:.]/g,"-")+".txt",
-    mimeType:"text/plain",
-    parents:[driveFolderId]
+    mimeType:"text/plain",parents:[driveFolderId]
    };
-
    const boundary="vault_boundary_"+Date.now();
    const body=
-    "--"+boundary+"\r\n"+
-    "Content-Type: application/json; charset=UTF-8\r\n\r\n"+
-    JSON.stringify(metadata)+"\r\n"+
-    "--"+boundary+"\r\n"+
-    "Content-Type: text/plain\r\n\r\n"+
-    encryptedData+"\r\n"+
-    "--"+boundary+"--";
-
+    "--"+boundary+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+
+    JSON.stringify(metadata)+"\r\n--"+boundary+"\r\nContent-Type: text/plain\r\n\r\n"+
+    encryptedData+"\r\n--"+boundary+"--";
    await driveRequest(
     "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name",
-    {
-     method:"POST",
-     headers:{"Content-Type":"multipart/related; boundary="+boundary},
-     body
-    }
+    {method:"POST",headers:{"Content-Type":"multipart/related; boundary="+boundary},body}
    );
-
-   $("backupStatus").innerHTML=
-    "<b>✅ GOOGLE DRIVE BACKUP COMPLETE</b><br>আপনার নিজের Drive-এ Backup পাঠানো হয়েছে।";
+   $("backupStatus").innerHTML="<b>✅ GOOGLE DRIVE BACKUP COMPLETE</b><br>আপনার নিজের Drive-এ Backup পাঠানো হয়েছে।";
    updateDriveStatus();
-  }else{
-   updateDriveStatus();
-  }
-
+  }else{updateDriveStatus()}
  }catch(e){
   console.error(e);
-  if(googleAccessToken){
-   alert("নিজের Drive-এ Backup হয়নি: "+e.message);
-  }
- }finally{
-  backupBusy=false;
- }
+  if(googleAccessToken)alert("নিজের Drive-এ Backup হয়নি: "+e.message);
+ }finally{backupBusy=false}
 }
-
 function updateDriveStatus(){
  if(!currentUser)return;
-
  if(googleAccessToken){
-  $("backupStatus").innerHTML=
-   "<b>🟢 GOOGLE DRIVE CONNECTED</b><br>এই সেশনে আপনার Google Drive সংযুক্ত আছে।";
+  $("backupStatus").innerHTML="<b>🟢 GOOGLE DRIVE CONNECTED</b><br>এই সেশনে আপনার Google Drive সংযুক্ত আছে।";
   $("driveMiniStatus").textContent="Connected";
  }else if(localStorage.getItem(driveFolderKey())){
-  $("backupStatus").innerHTML=
-   "<b>🟡 DRIVE PREVIOUSLY CONNECTED</b><br>Backup দিতে আবার Gmail কানেক্ট করুন।";
+  $("backupStatus").innerHTML="<b>🟡 DRIVE PREVIOUSLY CONNECTED</b><br>Backup দিতে আবার Gmail কানেক্ট করুন।";
   $("driveMiniStatus").textContent="Reconnect";
  }else{
-  $("backupStatus").innerHTML=
-   "<b>📂 YOUR GOOGLE DRIVE</b><br>এখনো কোনো Gmail কানেক্ট করা হয়নি।";
+  $("backupStatus").innerHTML="<b>📂 YOUR GOOGLE DRIVE</b><br>এখনো কোনো Gmail কানেক্ট করা হয়নি।";
   $("driveMiniStatus").textContent="Not Connected";
  }
 }
-
 function disconnectGoogleDrive(){
- googleAccessToken=null;
- localStorage.removeItem(driveFolderKey());
- driveFolderId=null;
- updateDriveStatus();
+ googleAccessToken=null;localStorage.removeItem(driveFolderKey());
+ driveFolderId=null;updateDriveStatus();
  alert("এই ডিভাইস থেকে Drive সংযোগ বিচ্ছিন্ন হয়েছে।");
 }
 </script>
